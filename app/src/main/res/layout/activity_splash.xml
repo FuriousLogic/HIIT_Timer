@@ -1,0 +1,27 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="uk.co.furiouslogic.hittimer.SplashActivity">
+
+    <ImageView
+        android:contentDescription="@string/splash_contentDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/fl_logo_30pc"
+        android:layout_marginTop="113dp"/>
+    <TextView
+        android:id="@+id/tvSplashText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/splashScreenText"
+        android:textColor="#0090d3"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="250dp"/>
+
+</RelativeLayout>

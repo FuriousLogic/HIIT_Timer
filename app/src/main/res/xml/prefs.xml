@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:title="@string/preferences_title"
+    android:layout_height="fill_parent"
+    android:layout_width="fill_parent"
+    >
+    <!--todo:put all text in resource files-->
+    <!--todo: change summary info on select-->
+    <PreferenceCategory
+        android:title="User"
+        >
+        <EditTextPreference
+            android:key="pref_AthleteName"
+            android:title="Athlete Name"
+            android:summary="Name will show on main app screen"
+            android:dialogTitle="Enter name"
+            />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="Workout"
+        >
+        <ListPreference
+            android:key="pref_warmup"
+            android:title="Warm Up"
+            android:summary="Choose warm up period"
+            android:entries="@array/warmup_types"
+            android:entryValues="@array/warmup_values"
+            />
+        <ListPreference
+            android:key="pref_power"
+            android:title="Power"
+            android:summary="Choose power duration"
+            android:entries="@array/power_types"
+            android:entryValues="@array/power_values"
+            />
+        <ListPreference
+            android:key="pref_rest"
+            android:title="Rest"
+            android:summary="Choose rest period"
+            android:entries="@array/rest_types"
+            android:entryValues="@array/rest_values"
+            />
+        <ListPreference
+            android:key="pref_cooldown"
+            android:title="Cool Down"
+            android:summary="Choose cool down period"
+            android:entries="@array/cooldown_types"
+            android:entryValues="@array/cooldown_values"
+            />
+        <ListPreference
+            android:key="pref_reps"
+            android:title="Reps"
+            android:summary="Choose number of reps"
+            android:entries="@array/reps_types"
+            android:entryValues="@array/reps_values"
+            />
+    </PreferenceCategory>
+
+</PreferenceScreen>

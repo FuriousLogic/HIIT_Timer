@@ -1,0 +1,68 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rlHitTimer"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context=".HIT_Timer"
+    android:keepScreenOn="true"
+    >
+
+    <TextView
+        android:id="@+id/tvAthleteName"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="24sp"
+        android:textStyle="italic"
+        />
+    <TextView
+        android:id="@+id/tvStage"
+        android:layout_below = "@+id/tvAthleteName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:textSize="52sp"
+        />
+    <TextView
+        android:id="@+id/tvCountDown"
+        android:layout_below = "@+id/tvStage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:textSize="150sp"
+        />
+    <TextView
+        android:id="@+id/tvRep"
+        android:layout_below = "@+id/tvCountDown"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:textSize="52sp"
+                />
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/avTimerBanner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        ads:adSize="BANNER"
+        ads:adUnitId="@string/banner_ad_unit_id"
+        >
+        </com.google.android.gms.ads.AdView>
+    <Button
+        android:id="@+id/btnStartTimer"
+        android:layout_above="@id/avTimerBanner"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/startTimerButtonText"
+        android:onClick="btnStartTimer_Click"
+        />
+
+</RelativeLayout>
