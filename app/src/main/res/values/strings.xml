@@ -33,5 +33,20 @@
     <string name="title_activity_settings">Settings</string>
     <string name="preferences_title">Preferences</string>
     <string name="splash_contentDescription">FL Logo</string>
+    <string name="athleteName_title">Athlete Name</string>
+    <string name="athleteName_summary">Name will show on main app screen</string>
+    <string name="athleteName_dialogue">Enter name</string>
+    <string name="category_user">User</string>
+    <string name="category_workout">Workout</string>
+    <string name="warmUp_title">Warm Up</string>
+    <string name="warmUp_summary">Choose warm up period</string>
+    <string name="power_title">Power</string>
+    <string name="power_summary">Choose power duration</string>
+    <string name="rest_title">Rest</string>
+    <string name="rest_summary">Choose rest period</string>
+    <string name="coolDown_title">Cool Down</string>
+    <string name="coolDown_summary">Choose cool down period</string>
+    <string name="reps_title">Reps</string>
+    <string name="reps_summary">Choose number of reps</string>
 
 </resources>

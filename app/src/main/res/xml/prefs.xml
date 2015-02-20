@@ -8,51 +8,51 @@
     <!--todo:put all text in resource files-->
     <!--todo: change summary info on select-->
     <PreferenceCategory
-        android:title="User"
+        android:title="@string/category_user"
         >
         <EditTextPreference
             android:key="pref_AthleteName"
-            android:title="Athlete Name"
-            android:summary="Name will show on main app screen"
-            android:dialogTitle="Enter name"
+            android:title="@string/athleteName_title"
+            android:summary="@string/athleteName_summary"
+            android:dialogTitle="@string/athleteName_dialogue"
             />
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:title="Workout"
+        android:title="@string/category_workout"
         >
         <ListPreference
             android:key="pref_warmup"
-            android:title="Warm Up"
-            android:summary="Choose warm up period"
+            android:title="@string/warmUp_title"
+            android:summary="@string/warmUp_summary"
             android:entries="@array/warmup_types"
             android:entryValues="@array/warmup_values"
             />
         <ListPreference
             android:key="pref_power"
-            android:title="Power"
-            android:summary="Choose power duration"
+            android:title="@string/power_title"
+            android:summary="@string/power_summary"
             android:entries="@array/power_types"
             android:entryValues="@array/power_values"
             />
         <ListPreference
             android:key="pref_rest"
-            android:title="Rest"
-            android:summary="Choose rest period"
+            android:title="@string/rest_title"
+            android:summary="@string/rest_summary"
             android:entries="@array/rest_types"
             android:entryValues="@array/rest_values"
             />
         <ListPreference
             android:key="pref_cooldown"
-            android:title="Cool Down"
-            android:summary="Choose cool down period"
+            android:title="@string/coolDown_title"
+            android:summary="@string/coolDown_summary"
             android:entries="@array/cooldown_types"
             android:entryValues="@array/cooldown_values"
             />
         <ListPreference
             android:key="pref_reps"
-            android:title="Reps"
-            android:summary="Choose number of reps"
+            android:title="@string/reps_title"
+            android:summary="@string/reps_summary"
             android:entries="@array/reps_types"
             android:entryValues="@array/reps_values"
             />
