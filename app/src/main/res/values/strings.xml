@@ -14,7 +14,7 @@
     <string name="startTimerButtonText">Start Timer</string>
     <string name="cancelTimerButtonText">Cancel</string>
     <string name="hello_world">Hello world!</string>
-    <string name="ic_action_info">info</string>
+    <string name="ic_action_about">About</string>
     <string name="Name">Name</string>
     <string name="UserName">User Name</string>
     <string name="WarmUpTitle">Warm Up (sec)</string>
@@ -48,5 +48,6 @@
     <string name="coolDown_summary">Choose cool down period</string>
     <string name="reps_title">Reps</string>
     <string name="reps_summary">Choose number of reps</string>
+    <string name="title_activity_xxx">xxxActivity</string>
 
 </resources>

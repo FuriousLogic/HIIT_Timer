@@ -47,8 +47,7 @@
         <activity
             android:name=".Prefs"
             android:label="Preferences"
-            android:parentActivityName=".HIT_Timer"
-            >
+            android:parentActivityName=".HIT_Timer" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="uk.co.furiouslogic.hittimer.HIT_Timer" />

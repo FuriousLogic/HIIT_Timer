@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.media.AudioAttributes;
@@ -384,7 +383,7 @@ public class HIT_Timer extends ActionBarActivity {
             case R.id.action_settings:
                 showSettings();
                 return true;
-            case R.id.action_info:
+            case R.id.action_about:
                 showInfo();
                 return true;
             default:

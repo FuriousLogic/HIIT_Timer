@@ -3,15 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools" tools:context=".HIT_Timer">
     <item
-        android:id="@+id/action_info"
-        android:icon="@drawable/ic_action_info"
-        android:title="@string/ic_action_info"
-        android:orderInCategory="100"
-        app:showAsAction="ifRoom" />
-    <item
         android:id="@+id/action_settings"
-        android:icon="@drawable/ic_action_settings"
         android:title="@string/action_settings"
         android:orderInCategory="100"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="never"
+        />
+    <item
+        android:id="@+id/action_about"
+        android:title="@string/ic_action_about"
+        android:orderInCategory="100"
+        app:showAsAction="never"
+        />
 </menu>
