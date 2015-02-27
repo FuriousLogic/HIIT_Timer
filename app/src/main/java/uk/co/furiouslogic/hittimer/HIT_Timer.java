@@ -5,11 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.media.AudioAttributes;
-import android.media.AudioManager;
-import android.media.SoundPool;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.preference.PreferenceManager;
@@ -80,10 +76,7 @@ public class HIT_Timer extends ActionBarActivity {
 
         //Admob
         AdView avTimerBanner = (AdView) findViewById(R.id.avTimerBanner);
-        com.google.android.gms.ads.AdRequest ar = new com.google.android.gms.ads.AdRequest.Builder()
-                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-                .addTestDevice("A9C350CBED46BAC089E21096D5522BE6").build();
-        avTimerBanner.loadAd(ar);
+        avTimerBanner.loadAd(AdMobSingleton.GetAdRequest());
 
         //Get Controls
         rlHitTimer = (RelativeLayout) findViewById(R.id.rlHitTimer);

@@ -24,6 +24,9 @@ public class SplashActivity extends Activity {
         //Define Sounds
         SoundsSingleton.Initialise(this);
 
+        //Setup Admob
+        AdMobSingleton.Initialise();
+
         long timeTakenSoFarMs = System.currentTimeMillis() - startTimeMillis;
         long timeLeftToWaitMs = totalMsDelayRequired - timeTakenSoFarMs;
         if(timeLeftToWaitMs <= 0) return;
