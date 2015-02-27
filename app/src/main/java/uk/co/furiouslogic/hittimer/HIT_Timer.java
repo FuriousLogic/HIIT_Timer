@@ -1,14 +1,11 @@
 package uk.co.furiouslogic.hittimer;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,7 +14,6 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.pollfish.constants.Position;
 import com.pollfish.main.PollFish;
@@ -85,14 +81,6 @@ public class HIT_Timer extends ActionBarActivity {
         tvRep = (TextView) findViewById(R.id.tvRep);
         tvAthleteName = (TextView)findViewById(R.id.tvAthleteName);
         btnStartTimer= (Button) findViewById(R.id.btnStartTimer);
-
-        //Set initial values
-        SetInitialPreference("pref_AthleteName","Your Name");
-        SetInitialPreference("pref_warmup", "120");
-        SetInitialPreference("pref_power", "20");
-        SetInitialPreference("pref_rest", "120");
-        SetInitialPreference("pref_cooldown", "120");
-        SetInitialPreference("pref_reps", "3");
 
         //Format screen
         zeroTheScreen();
@@ -195,31 +183,11 @@ public class HIT_Timer extends ActionBarActivity {
         new Workout().execute(workoutSecondsGone);
     }
 
-    private void SetInitialPreference(String key, String defaultValue) {
-        String currentValue = GetPrefString(key);
-        if(currentValue == "")
-            SetPrefString(key, defaultValue);
-    }
-
     private void showStatusData() {
         int workoutCount = DbHandlerSingleton.getWorkoutCount();
 
-        String statusData = GetPrefString("pref_AthleteName");
+        String statusData = PreferenceSingleton.GetPrefString("pref_AthleteName");
         tvAthleteName.setText(statusData + " (" + workoutCount + ")");
-    }
-
-    public String GetPrefString(String key) {
-        Context context = getApplicationContext();
-        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
-        return pref.getString(key, "");
-    }
-
-    public void SetPrefString(String key, final String value) {
-        Context context = getApplicationContext();
-        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
-        SharedPreferences.Editor editor = settings.edit();
-        editor.putString(key, value);
-        editor.apply();
     }
 
     private void zeroTheScreen() {
@@ -262,11 +230,11 @@ public class HIT_Timer extends ActionBarActivity {
     private void doWorkout() {
         //Get workout preferences
         //todo: figure out how to get int directly
-        final int warmUpSeconds = Integer.parseInt(GetPrefString("pref_warmup"));
-        final int powerSeconds = Integer.parseInt(GetPrefString("pref_power"));
-        final int restSeconds = Integer.parseInt(GetPrefString("pref_rest"));
-        final int coolDownSeconds = Integer.parseInt(GetPrefString("pref_cooldown"));
-        final int totalReps = Integer.parseInt(GetPrefString("pref_reps"));
+        final int warmUpSeconds = Integer.parseInt(PreferenceSingleton.GetPrefString("pref_warmup"));
+        final int powerSeconds = Integer.parseInt(PreferenceSingleton.GetPrefString("pref_power"));
+        final int restSeconds = Integer.parseInt(PreferenceSingleton.GetPrefString("pref_rest"));
+        final int coolDownSeconds = Integer.parseInt(PreferenceSingleton.GetPrefString("pref_cooldown"));
+        final int totalReps = Integer.parseInt(PreferenceSingleton.GetPrefString("pref_reps"));
 
         final int workoutSeconds = warmUpSeconds+(powerSeconds* totalReps)+(restSeconds*(totalReps -1))+coolDownSeconds;
 
@@ -376,7 +344,7 @@ public class HIT_Timer extends ActionBarActivity {
 
     //todo: zero screen on return from preferences
     private void showCurrentRep() {
-        int totalReps = Integer.parseInt(GetPrefString("pref_reps"));
+        int totalReps = Integer.parseInt(PreferenceSingleton.GetPrefString("pref_reps"));
 
         String repToShow = String.valueOf(currentRep);
         if(currentRep==0)repToShow="-";

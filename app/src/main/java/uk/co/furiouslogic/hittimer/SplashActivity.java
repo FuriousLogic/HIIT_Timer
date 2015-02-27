@@ -27,6 +27,10 @@ public class SplashActivity extends Activity {
         //Setup Admob
         AdMobSingleton.Initialise();
 
+        //Initialise Preferences
+        PreferenceSingleton.Initialise(getApplicationContext());
+
+        //Residual timer
         long timeTakenSoFarMs = System.currentTimeMillis() - startTimeMillis;
         long timeLeftToWaitMs = totalMsDelayRequired - timeTakenSoFarMs;
         if(timeLeftToWaitMs <= 0) return;
