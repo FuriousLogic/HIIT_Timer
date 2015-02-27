@@ -11,31 +11,44 @@ import android.view.View;
 
 import java.util.Date;
 
+import static android.database.sqlite.SQLiteDatabase.openOrCreateDatabase;
+
 /**
  * Created by Barry on 09/02/2015.
  */
 
-public class DbHandler {
-    private final SQLiteDatabase _db;
+public class DbHandlerSingleton {
+    private static SQLiteDatabase _db;
 
-    public DbHandler(SQLiteDatabase db){
+    public DbHandlerSingleton(){}
+
+    public static void Initialise(SQLiteDatabase db){
         _db = db;
         CreateOrOpenDb();
     }
 
-    private void CreateOrOpenDb(){
+    private static void CreateOrOpenDb(){
         //Setup Data
         _db.execSQL("CREATE TABLE IF NOT EXISTS workout(timestamp INTEGER);");
+        _db.execSQL("CREATE TABLE IF NOT EXISTS log(message TEXT);");
+
+        _db.execSQL("delete from log");
     }
 
-    public int getWorkoutCount() {
+    public static void SaveToLog(String message){
+        ContentValues cv = new ContentValues();
+        cv.put("message", message);
+        _db.insert("log", null, cv);
+    }
+
+    public static int getWorkoutCount() {
         Cursor c = getCursor("select * from workout");
         int count = c.getCount();
 
         return count;
     }
 
-    public Cursor getCursor(String sql) {
+    public static Cursor getCursor(String sql) {
         Cursor c = _db.rawQuery(sql, null);
         if(c.getCount()==0){
             //todo: error or something
@@ -44,13 +57,13 @@ public class DbHandler {
         return c;
     }
 
-    public void saveNewWorkout() {
+    public static void saveNewWorkout() {
         ContentValues cv = new ContentValues();
         cv.put("timestamp", System.currentTimeMillis());
         _db.insert("workout", null, cv);
     }
 
-    public Date getDateOfLastWorkout() {
+    public static Date getDateOfLastWorkout() {
         Cursor c = getCursor("select * from workout");
         if(c.getCount()==0) return null;
 

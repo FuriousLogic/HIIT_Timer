@@ -4,11 +4,11 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.media.AudioAttributes;
 import android.media.AudioManager;
 import android.media.SoundPool;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -23,19 +23,16 @@ import android.widget.TextView;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.pollfish.constants.Position;
+import com.pollfish.main.PollFish;
 
 //import com.google.android.gms.games.internal.constants.TimeSpan;
-import com.pollfish.main.PollFish;
-import com.pollfish.constants.Position;
-
-import java.util.Date;
 
 //todo: Make beeps distinct - make beeps myself (Ruby's keyboard?)
 //todo: track workouts over a week
 //todo: notifications on workouts to do this week
 
 public class HIT_Timer extends ActionBarActivity {
-    private static final int RESULT_SETTINGS = 1;
     //Workout flags
     private Boolean warmUpDone = false;
     private Boolean powerDone = false;
@@ -58,6 +55,10 @@ public class HIT_Timer extends ActionBarActivity {
     final String bFinished = "#ffffff";
     final String tFinished =  "#000000";
 
+    //Instance State Value Names
+    final String workoutSecondsGoneKey = "workoutSecondsGoneKey";
+    final String isRunningKey = "isRunningKey";
+
     //Controls
     private RelativeLayout rlHitTimer;
     private TextView tvStage;
@@ -68,33 +69,14 @@ public class HIT_Timer extends ActionBarActivity {
 
     //Properties
     private CountDownTimer countDownTimer;
-    private SoundPool beepPool;
-    private int beepLowId;
-    private int beepHighId;
-    private DbHandler dbh;
+    private Integer workoutSecondsGone = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        DbHandlerSingleton.SaveToLog("onCreate");
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hit__timer);
-
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            AudioAttributes aa = new AudioAttributes.Builder()
-                    .setContentType(AudioAttributes.CONTENT_TYPE_UNKNOWN)
-                    .setUsage(AudioAttributes.USAGE_ALARM)
-                    .build();
-
-            beepPool = new SoundPool.Builder()
-                    .setMaxStreams(10)
-                    .setAudioAttributes(aa)
-                    .build();
-            beepLowId = beepPool.load(this, R.raw.beep, 1);
-            beepHighId = beepPool.load(this, R.raw.beephigh, 1);
-        }else{
-            beepPool = new SoundPool(10, AudioManager.STREAM_ALARM, 1);
-            beepLowId = beepPool.load(this, R.raw.beep, 1);
-            beepHighId = beepPool.load(this, R.raw.beephigh, 1);
-        }
 
         //Admob
         AdView avTimerBanner = (AdView) findViewById(R.id.avTimerBanner);
@@ -119,43 +101,106 @@ public class HIT_Timer extends ActionBarActivity {
         SetInitialPreference("pref_cooldown", "120");
         SetInitialPreference("pref_reps", "3");
 
-        //Db
-        SQLiteDatabase db = openOrCreateDatabase("uk.co.furiouslogic.hit_timer", MODE_PRIVATE, null);
-        dbh = new DbHandler(db);
-
         //Format screen
         zeroTheScreen();
 
         //Time since last workout
-        Date now = new Date(System.currentTimeMillis());
-        Date lastWorkout = dbh.getDateOfLastWorkout();
-        String timeSinceLastWorkoutMessage;
-        if(lastWorkout != null) {
-            long diffInMs = now.getTime() - lastWorkout.getTime();
-            long seconds = diffInMs / 1000;
-            seconds /= 60;
-            long minutesLeft = seconds % 60;
-            seconds /= 60;
-            long hoursLeft = seconds % 24;
-            seconds /= 24;
-            long daysLeft = seconds;
-            timeSinceLastWorkoutMessage = "Time Since Last Workout: \r\n";
-            if (daysLeft > 0) timeSinceLastWorkoutMessage += daysLeft + " days, ";
-            timeSinceLastWorkoutMessage += hoursLeft + " hours, ";
-            timeSinceLastWorkoutMessage += minutesLeft + " minutes";
-        } else{
-            timeSinceLastWorkoutMessage = "No workouts completed";
-        }
-
-
+//        Date now = new Date(System.currentTimeMillis());
+//        Date lastWorkout = dbh.getDateOfLastWorkout();
+//        String timeSinceLastWorkoutMessage;
+//        if(lastWorkout != null) {
+//            long diffInMs = now.getTime() - lastWorkout.getTime();
+//            long seconds = diffInMs / 1000;
+//            seconds /= 60;
+//            long minutesLeft = seconds % 60;
+//            seconds /= 60;
+//            long hoursLeft = seconds % 24;
+//            seconds /= 24;
+//            long daysLeft = seconds;
+//            timeSinceLastWorkoutMessage = "Time Since Last Workout: \r\n";
+//            if (daysLeft > 0) timeSinceLastWorkoutMessage += daysLeft + " days, ";
+//            timeSinceLastWorkoutMessage += hoursLeft + " hours, ";
+//            timeSinceLastWorkoutMessage += minutesLeft + " minutes";
+//        } else{
+//            timeSinceLastWorkoutMessage = "No workouts completed";
+//        }
+//
+//        showPopupMessage("Last Workout", timeSinceLastWorkoutMessage);
     }
 
     @Override
     public void onStart(){
+        DbHandlerSingleton.SaveToLog("onStart");
         super.onStart();
         showStatusData();
     }
 
+    @Override
+    public void onResume(){
+        DbHandlerSingleton.SaveToLog("onResume");
+        super.onResume();
+        PollFish.init(this, "d196dcd2-c1c9-48bd-908b-b371cc3bcd89", Position.TOP_LEFT, 50);
+    }
+
+    @Override
+    public void onStop(){
+        DbHandlerSingleton.SaveToLog("onStop");
+        super.onStop();
+    }
+
+    @Override
+    public void onDestroy(){
+        DbHandlerSingleton.SaveToLog("onDestroy");
+        super.onDestroy();
+//        countDownTimer.cancel();
+//        isRunning=false;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        DbHandlerSingleton.SaveToLog("onCreateOptionsMenu");
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_hit__timer, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        DbHandlerSingleton.SaveToLog("onOptionsItemSelected");
+        int id = item.getItemId();
+
+        switch (id){
+            case R.id.action_settings:
+                showSettings();
+                return true;
+            case R.id.action_about:
+                showInfo();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState){
+        DbHandlerSingleton.SaveToLog("onSaveInstanceState");
+        super.onSaveInstanceState(savedInstanceState);
+
+        savedInstanceState.putInt(workoutSecondsGoneKey, workoutSecondsGone);
+        savedInstanceState.putBoolean(isRunningKey, isRunning);
+    }
+
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState){
+        DbHandlerSingleton.SaveToLog("onRestoreInstanceState");
+        super.onRestoreInstanceState(savedInstanceState);
+
+        workoutSecondsGone = savedInstanceState.getInt(workoutSecondsGoneKey);
+        isRunning = savedInstanceState.getBoolean(isRunningKey);
+        if(!isRunning){return;}
+
+        new Workout().execute(workoutSecondsGone);
+    }
 
     private void SetInitialPreference(String key, String defaultValue) {
         String currentValue = GetPrefString(key);
@@ -163,16 +208,8 @@ public class HIT_Timer extends ActionBarActivity {
             SetPrefString(key, defaultValue);
     }
 
-    private void playStartSound(){
-        beepPool.play(beepHighId, 1, 1, 1, 0, 1);
-    }
-
-    private void playStopSound(){
-        beepPool.play(beepLowId, 1, 1, 1, 0, 1);
-    }
-
     private void showStatusData() {
-        int workoutCount = dbh.getWorkoutCount();
+        int workoutCount = DbHandlerSingleton.getWorkoutCount();
 
         String statusData = GetPrefString("pref_AthleteName");
         tvAthleteName.setText(statusData + " (" + workoutCount + ")");
@@ -275,7 +312,7 @@ public class HIT_Timer extends ActionBarActivity {
                         showColours();
                         if(allowRepToIncrease){
                             currentRep++;
-                            playStartSound();
+                            SoundsSingleton.playStartSound();
                             allowRepToIncrease = false;
                         }
 
@@ -288,7 +325,7 @@ public class HIT_Timer extends ActionBarActivity {
 
                         if(stageSecondsToGo <= 1) {
                             powerDone = true;
-                            playStopSound();
+                            SoundsSingleton.playStopSound();
                             if(currentRep == totalReps)
                                 restDone=true;
                         }
@@ -344,7 +381,7 @@ public class HIT_Timer extends ActionBarActivity {
         countDownTimer.start();
     }
 
-    //todo: zero screen on reurn from preferences
+    //todo: zero screen on return from preferences
     private void showCurrentRep() {
         int totalReps = Integer.parseInt(GetPrefString("pref_reps"));
 
@@ -365,30 +402,7 @@ public class HIT_Timer extends ActionBarActivity {
     }
 
     private void saveWorkoutToDB() {
-        dbh.saveNewWorkout();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_hit__timer, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        switch (id){
-            case R.id.action_settings:
-                showSettings();
-                return true;
-            case R.id.action_about:
-                showInfo();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
+        DbHandlerSingleton.saveNewWorkout();
     }
 
     private void showInfo() {
@@ -421,7 +435,10 @@ public class HIT_Timer extends ActionBarActivity {
 
         if(btnStartTimer.getText()==getString(R.string.startTimerButtonText)) {
             btnStartTimer.setText(getString(R.string.cancelTimerButtonText));
-            doWorkout();
+            isRunning = true;
+
+            //start async counter
+            new Workout().execute(0);
         }
         else{
             countDownTimer.cancel();
@@ -431,9 +448,61 @@ public class HIT_Timer extends ActionBarActivity {
         }
     }
 
-    @Override
-    public void onResume(){
-        super.onResume();
-        PollFish.init(this, "d196dcd2-c1c9-48bd-908b-b371cc3bcd89", Position.TOP_LEFT, 50);
+    public void displayWorkoutState(Integer secondsGone){
+        workoutSecondsGone = secondsGone;
+        tvCountDown.setText(secondsGone.toString());
+    }
+
+    public void workoutIsFinished(){
+        isRunning = false;
+        tvCountDown.setText("YAY");
+    }
+
+    private class Workout extends AsyncTask<Integer, Integer, Boolean> {
+//        HIT_Timer _context;
+
+        @Override
+        protected Boolean doInBackground(Integer... params) {
+            DbHandlerSingleton.SaveToLog("doInBackground");
+            SoundsSingleton.playStartSound();
+            int startSecond = params[0];
+            int currentSecond = startSecond-1;
+            int finalSecond = 10;
+            long initialMillis = System.currentTimeMillis();
+
+            while(currentSecond<=finalSecond) {
+                long currentMillis = System.currentTimeMillis();
+
+                //Have we moved on a second yet?
+                if(initialMillis+((currentSecond+1)*1000)<=currentMillis){
+                    publishProgress(currentSecond);
+                    currentSecond++;
+                }
+            }
+
+            return true;
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... values){
+            DbHandlerSingleton.SaveToLog("onProgressUpdate");
+            super.onProgressUpdate(values);
+            displayWorkoutState(values[0]);
+        }
+
+        @Override
+        protected void onPostExecute(Boolean result){
+            DbHandlerSingleton.SaveToLog("onPostExecute");
+            super.onPostExecute(result);
+            SoundsSingleton.playStopSound();
+            workoutIsFinished();
+        }
+
+        @Override
+        protected void onCancelled(){
+            DbHandlerSingleton.SaveToLog("onCancelled");
+            super.onCancelled();
+        }
     }
 }
+
