@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -60,8 +59,13 @@ public class HIT_Timer extends ActionBarActivity {
     private Button btnStartTimer;
 
     //Properties
-    private CountDownTimer countDownTimer;
     private Integer workoutSecondsGone = 0;
+    private Workout workout;
+    private int secondsWarmUp;
+    private int secondsPower;
+    private int secondsRest;
+    private int secondsCoolDown;
+    private int repsCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,9 +85,6 @@ public class HIT_Timer extends ActionBarActivity {
         tvRep = (TextView) findViewById(R.id.tvRep);
         tvAthleteName = (TextView)findViewById(R.id.tvAthleteName);
         btnStartTimer= (Button) findViewById(R.id.btnStartTimer);
-
-        //Format screen
-        zeroTheScreen();
 
         //Time since last workout
 //        Date now = new Date(System.currentTimeMillis());
@@ -109,17 +110,53 @@ public class HIT_Timer extends ActionBarActivity {
 //        showPopupMessage("Last Workout", timeSinceLastWorkoutMessage);
     }
 
+    private void showState() {
+        DbHandlerSingleton.SaveToLog("showState");
+        DbHandlerSingleton.SaveToLog(isRunning?"Is Running":"NOT Running");
+
+        String stage = "";
+        Integer stageSecond = null;
+        String backgroundColour = null;
+        String foregroundColour = null;
+
+        if(!isRunning){
+            workoutSecondsGone = 0;
+            stage = "Inert";
+            stageSecond=workoutSecondsGone;
+            backgroundColour = bFinished;
+            foregroundColour = tFinished;
+        }
+        else{
+            //Which Stage are we in?
+            if(workoutSecondsGone <= secondsWarmUp){
+                stage = "Warm Up";
+                stageSecond = secondsWarmUp - workoutSecondsGone;
+                backgroundColour = bWarmUp;
+                foregroundColour = tWarmUp;
+            }
+            else{
+
+            }
+        }
+
+        //Paint Screen
+        tvStage.setText(stage);
+        tvCountDown.setText(Integer.toString(stageSecond));
+        setStageColour(backgroundColour, foregroundColour);
+    }
+
     @Override
     public void onStart(){
         DbHandlerSingleton.SaveToLog("onStart");
         super.onStart();
-        showStatusData();
+        showAthleteNameAndWorkoutCount();
     }
 
     @Override
     public void onResume(){
         DbHandlerSingleton.SaveToLog("onResume");
         super.onResume();
+        showState();
         PollFish.init(this, "d196dcd2-c1c9-48bd-908b-b371cc3bcd89", Position.TOP_LEFT, 50);
     }
 
@@ -169,6 +206,9 @@ public class HIT_Timer extends ActionBarActivity {
 
         savedInstanceState.putInt(workoutSecondsGoneKey, workoutSecondsGone);
         savedInstanceState.putBoolean(isRunningKey, isRunning);
+
+        if(isRunning)
+            workout.cancel(true);
     }
 
     @Override
@@ -176,183 +216,189 @@ public class HIT_Timer extends ActionBarActivity {
         DbHandlerSingleton.SaveToLog("onRestoreInstanceState");
         super.onRestoreInstanceState(savedInstanceState);
 
+        //Get data from state
         workoutSecondsGone = savedInstanceState.getInt(workoutSecondsGoneKey);
         isRunning = savedInstanceState.getBoolean(isRunningKey);
-        if(!isRunning){return;}
 
-        new Workout().execute(workoutSecondsGone);
+        //Zero the state
+        savedInstanceState.clear();
+
+        //Do we need to restart the timer?
+        if(!isRunning){return;}
+        int totalSecondsInWorkout = getTotalSecondsInWorkout();
+        workout = (Workout) new Workout().execute(workoutSecondsGone, totalSecondsInWorkout);
     }
 
-    private void showStatusData() {
+    private void showAthleteNameAndWorkoutCount() {
         int workoutCount = DbHandlerSingleton.getWorkoutCount();
 
         String statusData = PreferenceSingleton.GetPrefString("pref_AthleteName");
         tvAthleteName.setText(statusData + " (" + workoutCount + ")");
     }
 
-    private void zeroTheScreen() {
-        currentRep=0;
-        isRunning=false;
-        warmUpDone=false;
-        powerDone =false;
-        restDone=false;
-        coolDownDone=false;
+//    private void zeroTheScreen() {
+//        currentRep=0;
+//        isRunning=false;
+//        warmUpDone=false;
+//        powerDone =false;
+//        restDone=false;
+//        coolDownDone=false;
+//
+//        tvStage.setText(getString(R.string.stageInitialText));
+//        btnStartTimer.setText(getString(R.string.startTimerButtonText));
+//
+//        tvCountDown.setText("0");
+//
+//        showCurrentRep();
+//        showColours();
+//    }
 
-        tvStage.setText(getString(R.string.stageInitialText));
-        btnStartTimer.setText(getString(R.string.startTimerButtonText));
+//    private void showColours() {
+//        if(!isRunning){
+//            setStageColour(bFinished, tFinished);
+//            return;
+//        }
+//        if(!warmUpDone) {
+//            setStageColour(bWarmUp, tWarmUp);
+//            return;
+//        }
+//        if(!powerDone){
+//            setStageColour(bOn, tOn);
+//            return;
+//        }
+//        if(!restDone){
+//            setStageColour(bRest, tRest);
+//            return;
+//        }
+//        setStageColour(bCoolDown, tCoolDown);
+//    }
 
-        tvCountDown.setText("0");
-
-        showCurrentRep();
-        showColours();
-    }
-
-    private void showColours() {
-        if(!isRunning){
-            setStageColour(bFinished, tFinished);
-            return;
-        }
-        if(!warmUpDone) {
-            setStageColour(bWarmUp, tWarmUp);
-            return;
-        }
-        if(!powerDone){
-            setStageColour(bOn, tOn);
-            return;
-        }
-        if(!restDone){
-            setStageColour(bRest, tRest);
-            return;
-        }
-        setStageColour(bCoolDown, tCoolDown);
-    }
-
-    private void doWorkout() {
-        //Get workout preferences
-        //todo: figure out how to get int directly
-        final int warmUpSeconds = Integer.parseInt(PreferenceSingleton.GetPrefString("pref_warmup"));
-        final int powerSeconds = Integer.parseInt(PreferenceSingleton.GetPrefString("pref_power"));
-        final int restSeconds = Integer.parseInt(PreferenceSingleton.GetPrefString("pref_rest"));
-        final int coolDownSeconds = Integer.parseInt(PreferenceSingleton.GetPrefString("pref_cooldown"));
-        final int totalReps = Integer.parseInt(PreferenceSingleton.GetPrefString("pref_reps"));
-
-        final int workoutSeconds = warmUpSeconds+(powerSeconds* totalReps)+(restSeconds*(totalReps -1))+coolDownSeconds;
-
-        //Workout
-        countDownTimer = new CountDownTimer(workoutSeconds *1000, 200) {
-
-            public void onTick(long millisUntilFinished) {
-                isRunning=true;
-                int secondsToGo = (int) (millisUntilFinished/1000);
-                if(secondsToGo == currentSecondsToGo) return;
-                currentSecondsToGo = secondsToGo;
-
-                int currentSecond = workoutSeconds-secondsToGo;
-
-                //Where are we in the sequence?
-                String stage="";
-                int stageCurrentSecond;
-                int stageSecondsToGo=0;
-
-                //Warm up
-                if(!warmUpDone){
-                    stage=getString(R.string.warmUpText);
-                    showColours();
-                    stageCurrentSecond = currentSecond;
-                    stageSecondsToGo = warmUpSeconds-stageCurrentSecond;
-
-                    if(stageSecondsToGo <= 1) {
-                        warmUpDone = true;
-                        allowRepToIncrease=true;
-                    }
-                }
-                else{
-                    //Power
-                    if(!powerDone) {
-                        stage=getString(R.string.powerText);
-                        showColours();
-                        if(allowRepToIncrease){
-                            currentRep++;
-                            SoundsSingleton.playStartSound();
-                            allowRepToIncrease = false;
-                        }
-
-                        showCurrentRep();
-                        if(currentRep ==1)
-                            stageCurrentSecond = currentSecond-warmUpSeconds;
-                        else
-                            stageCurrentSecond = currentSecond-(((powerSeconds+restSeconds)*(currentRep -1))+warmUpSeconds);
-                        stageSecondsToGo = powerSeconds-stageCurrentSecond;
-
-                        if(stageSecondsToGo <= 1) {
-                            powerDone = true;
-                            SoundsSingleton.playStopSound();
-                            if(currentRep == totalReps)
-                                restDone=true;
-                        }
-                    }
-                    else{
-                        //Rest
-                        if(!restDone){
-                            stage=getString(R.string.restText);
-                            showColours();
-                            if(currentRep ==1)
-                                stageCurrentSecond = currentSecond-(powerSeconds+warmUpSeconds);
-                            else
-                                stageCurrentSecond = currentSecond-(((powerSeconds+restSeconds)*(currentRep -1))+powerSeconds+warmUpSeconds);
-                            stageSecondsToGo = restSeconds-stageCurrentSecond;
-
-                            if(stageSecondsToGo <= 1) {
-
-                                if(currentRep < totalReps){
-                                    allowRepToIncrease = true;
-                                    powerDone =false;
-                                    restDone=false;
-                                }
-                                else{
-                                    restDone=true;
-                                }
-                            }
-                        }
-                        else{
-                            if(currentRep == totalReps && restDone && !coolDownDone){
-                                stage = getString(R.string.coolDownText);
-                                showColours();
-                                showCurrentRep();
-                                stageSecondsToGo = workoutSeconds - currentSecond;
-
-                                if(currentSecond>=workoutSeconds)
-                                    coolDownDone=true;
-                            }
-                        }
-                    }
-                }
-
-                int displaySeconds = stageSecondsToGo;
-                tvStage.setText(stage);
-                tvCountDown.setText(Integer.toString(displaySeconds));
-            }
-
-            public void onFinish() {
-                saveWorkoutToDB();
-                showStatusData();
-                zeroTheScreen();
-            }
-        };
-        countDownTimer.start();
-    }
+//    private void doWorkout() {
+//        //Get workout preferences
+//        //todo: figure out how to get int directly
+//        final int warmUpSeconds = Integer.parseInt(PreferenceSingleton.GetPrefString("pref_warmup"));
+//        final int powerSeconds = Integer.parseInt(PreferenceSingleton.GetPrefString("pref_power"));
+//        final int restSeconds = Integer.parseInt(PreferenceSingleton.GetPrefString("pref_rest"));
+//        final int coolDownSeconds = Integer.parseInt(PreferenceSingleton.GetPrefString("pref_cooldown"));
+//        final int totalReps = Integer.parseInt(PreferenceSingleton.GetPrefString("pref_reps"));
+//
+//        final int workoutSeconds = warmUpSeconds+(powerSeconds* totalReps)+(restSeconds*(totalReps -1))+coolDownSeconds;
+//
+//        //Workout
+//        countDownTimer = new CountDownTimer(workoutSeconds *1000, 200) {
+//
+//            public void onTick(long millisUntilFinished) {
+//                isRunning=true;
+//                int secondsToGo = (int) (millisUntilFinished/1000);
+//                if(secondsToGo == currentSecondsToGo) return;
+//                currentSecondsToGo = secondsToGo;
+//
+//                int currentSecond = workoutSeconds-secondsToGo;
+//
+//                //Where are we in the sequence?
+//                String stage="";
+//                int stageCurrentSecond;
+//                int stageSecondsToGo=0;
+//
+//                //Warm up
+//                if(!warmUpDone){
+//                    stage=getString(R.string.warmUpText);
+//                    showColours();
+//                    stageCurrentSecond = currentSecond;
+//                    stageSecondsToGo = warmUpSeconds-stageCurrentSecond;
+//
+//                    if(stageSecondsToGo <= 1) {
+//                        warmUpDone = true;
+//                        allowRepToIncrease=true;
+//                    }
+//                }
+//                else{
+//                    //Power
+//                    if(!powerDone) {
+//                        stage=getString(R.string.powerText);
+//                        showColours();
+//                        if(allowRepToIncrease){
+//                            currentRep++;
+//                            SoundsSingleton.playStartSound();
+//                            allowRepToIncrease = false;
+//                        }
+//
+//                        showCurrentRep();
+//                        if(currentRep ==1)
+//                            stageCurrentSecond = currentSecond-warmUpSeconds;
+//                        else
+//                            stageCurrentSecond = currentSecond-(((powerSeconds+restSeconds)*(currentRep -1))+warmUpSeconds);
+//                        stageSecondsToGo = powerSeconds-stageCurrentSecond;
+//
+//                        if(stageSecondsToGo <= 1) {
+//                            powerDone = true;
+//                            SoundsSingleton.playStopSound();
+//                            if(currentRep == totalReps)
+//                                restDone=true;
+//                        }
+//                    }
+//                    else{
+//                        //Rest
+//                        if(!restDone){
+//                            stage=getString(R.string.restText);
+//                            showColours();
+//                            if(currentRep ==1)
+//                                stageCurrentSecond = currentSecond-(powerSeconds+warmUpSeconds);
+//                            else
+//                                stageCurrentSecond = currentSecond-(((powerSeconds+restSeconds)*(currentRep -1))+powerSeconds+warmUpSeconds);
+//                            stageSecondsToGo = restSeconds-stageCurrentSecond;
+//
+//                            if(stageSecondsToGo <= 1) {
+//
+//                                if(currentRep < totalReps){
+//                                    allowRepToIncrease = true;
+//                                    powerDone =false;
+//                                    restDone=false;
+//                                }
+//                                else{
+//                                    restDone=true;
+//                                }
+//                            }
+//                        }
+//                        else{
+//                            if(currentRep == totalReps && restDone && !coolDownDone){
+//                                stage = getString(R.string.coolDownText);
+//                                showColours();
+//                                showCurrentRep();
+//                                stageSecondsToGo = workoutSeconds - currentSecond;
+//
+//                                if(currentSecond>=workoutSeconds)
+//                                    coolDownDone=true;
+//                            }
+//                        }
+//                    }
+//                }
+//
+//                int displaySeconds = stageSecondsToGo;
+//                tvStage.setText(stage);
+//                tvCountDown.setText(Integer.toString(displaySeconds));
+//            }
+//
+//            public void onFinish() {
+//                saveWorkoutToDB();
+//                showAthleteNameAndWorkoutCount();
+//                zeroTheScreen();
+//            }
+//        };
+//        countDownTimer.start();
+//    }
 
     //todo: zero screen on return from preferences
-    private void showCurrentRep() {
-        int totalReps = Integer.parseInt(PreferenceSingleton.GetPrefString("pref_reps"));
-
-        String repToShow = String.valueOf(currentRep);
-        if(currentRep==0)repToShow="-";
-        if(currentRep==totalReps && restDone)repToShow="-";
-
-        String text = getString(R.string.repText) + " " + repToShow + " / " + totalReps;
-        tvRep.setText(text);
-    }
+//    private void showCurrentRep() {
+//        int totalReps = Integer.parseInt(PreferenceSingleton.GetPrefString("pref_reps"));
+//
+//        String repToShow = String.valueOf(currentRep);
+//        if(currentRep==0)repToShow="-";
+//        if(currentRep==totalReps && restDone)repToShow="-";
+//
+//        String text = getString(R.string.repText) + " " + repToShow + " / " + totalReps;
+//        tvRep.setText(text);
+//    }
 
     private void setStageColour(String backgroundColour, String textColour) {
         rlHitTimer.setBackgroundColor(Color.parseColor(backgroundColour));
@@ -362,9 +408,9 @@ public class HIT_Timer extends ActionBarActivity {
         tvAthleteName.setTextColor(Color.parseColor(textColour));
     }
 
-    private void saveWorkoutToDB() {
-        DbHandlerSingleton.saveNewWorkout();
-    }
+//    private void saveWorkoutToDB() {
+//        DbHandlerSingleton.saveNewWorkout();
+//    }
 
     private void showInfo() {
         String msg = "High Intensity Interval Training (HIIT) is an enhanced form of interval training, an exercise strategy " +
@@ -386,37 +432,54 @@ public class HIT_Timer extends ActionBarActivity {
     }
 
     private void showSettings() {
-//        Intent intent = new Intent(this, SettingsActivity.class);
-//        startActivity(intent);
         Intent i = new Intent(this, Prefs.class);
         startActivity(i);
     }
 
     public void btnStartTimer_Click(View view) {
 
-        if(btnStartTimer.getText()==getString(R.string.startTimerButtonText)) {
+        if (btnStartTimer.getText() == getString(R.string.startTimerButtonText)) {
             btnStartTimer.setText(getString(R.string.cancelTimerButtonText));
             isRunning = true;
 
-            //start async counter
-            new Workout().execute(0);
-        }
-        else{
-            countDownTimer.cancel();
-            isRunning=false;
+            //Get prefs
+            String sWarmUp = PreferenceSingleton.GetPrefString("pref_warmup");
+            String sPower = PreferenceSingleton.GetPrefString("pref_power");
+            String sRest = PreferenceSingleton.GetPrefString("pref_rest");
+            String sCoolDown = PreferenceSingleton.GetPrefString("pref_cooldown");
+            String sReps = PreferenceSingleton.GetPrefString("pref_reps");
+            secondsWarmUp = Integer.parseInt(sWarmUp);
+            secondsPower = Integer.parseInt(sPower);
+            secondsRest = Integer.parseInt(sRest);
+            secondsCoolDown = Integer.parseInt(sCoolDown);
+            repsCount = Integer.parseInt(sReps);
+
+            int totalSecondsInWorkout = getTotalSecondsInWorkout();
+            workout = (Workout) new Workout().execute(0, totalSecondsInWorkout);
+        } else {
+            if (workout != null) workout.cancel(true);
+            isRunning = false;
             btnStartTimer.setText(R.string.startTimerButtonText);
-            zeroTheScreen();
+            showState();
         }
     }
 
     public void displayWorkoutState(Integer secondsGone){
         workoutSecondsGone = secondsGone;
-        tvCountDown.setText(secondsGone.toString());
+        showState();
     }
 
     public void workoutIsFinished(){
         isRunning = false;
         tvCountDown.setText("YAY");
+    }
+
+    private int getTotalSecondsInWorkout() {
+        int rv = secondsWarmUp;
+        rv += secondsPower * repsCount;
+        rv += secondsRest * (repsCount - 1);
+        rv += secondsCoolDown;
+        return rv;
     }
 
     private class Workout extends AsyncTask<Integer, Integer, Boolean> {
@@ -427,8 +490,8 @@ public class HIT_Timer extends ActionBarActivity {
             DbHandlerSingleton.SaveToLog("doInBackground");
             SoundsSingleton.playStartSound();
             int startSecond = params[0];
-            int currentSecond = startSecond-1;
-            int finalSecond = 10;
+            int currentSecond = startSecond;
+            int finalSecond = params[1];
             long initialMillis = System.currentTimeMillis();
 
             while(currentSecond<=finalSecond) {
@@ -436,6 +499,9 @@ public class HIT_Timer extends ActionBarActivity {
 
                 //Have we moved on a second yet?
                 if(initialMillis+((currentSecond+1)*1000)<=currentMillis){
+                    if(isCancelled()){
+                        return null;
+                    }
                     publishProgress(currentSecond);
                     currentSecond++;
                 }

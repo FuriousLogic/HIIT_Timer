@@ -41,10 +41,10 @@ public class SoundsSingleton {
     }
 
     public static void playStartSound() {
-        beepPool.play(beepHighId, 1, 1, 1, 0, 1);
+        //beepPool.play(beepHighId, 1, 1, 1, 0, 1);
     }
 
     public static void playStopSound() {
-        beepPool.play(beepLowId, 1, 1, 1, 0, 1);
+        //beepPool.play(beepLowId, 1, 1, 1, 0, 1);
     }
 }

@@ -36,9 +36,9 @@ public class DbHandlerSingleton {
     }
 
     public static void SaveToLog(String message){
-        ContentValues cv = new ContentValues();
-        cv.put("message", message);
-        _db.insert("log", null, cv);
+//        ContentValues cv = new ContentValues();
+//        cv.put("message", message);
+//        _db.insert("log", null, cv);
     }
 
     public static int getWorkoutCount() {
