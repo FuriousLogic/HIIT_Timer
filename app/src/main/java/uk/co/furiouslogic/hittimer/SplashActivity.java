@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
+import android.widget.TextView;
 
 //todo: make proper image that includes text
 //todo: show progress of loading stuff
@@ -19,19 +20,25 @@ public class SplashActivity extends Activity {
         setContentView(R.layout.activity_splash);
 
         //Initialise DB
+        TextView splashStatus = (TextView) findViewById(R.id.tvSplashStatus);
+        splashStatus.setText("Initialising Database");
         SQLiteDatabase db = openOrCreateDatabase("uk.co.furiouslogic.hit_timer", MODE_PRIVATE, null);
         DbHandlerSingleton.Initialise(db);
 
         //Define Sounds
+        splashStatus.setText("Defining Sounds");
         SoundsSingleton.Initialise(this);
 
         //Setup Admob
+        splashStatus.setText("Setting up Admob");
         AdMobSingleton.Initialise();
 
         //Initialise Preferences
+        splashStatus.setText("Initialising Preferences");
         PreferenceSingleton.Initialise(getApplicationContext());
 
         //Residual timer
+        splashStatus.setText("");
         long timeTakenSoFarMs = System.currentTimeMillis() - startTimeMillis;
         long timeLeftToWaitMs = totalMsDelayRequired - timeTakenSoFarMs;
         if(timeLeftToWaitMs <= 0) return;

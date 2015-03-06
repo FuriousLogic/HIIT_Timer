@@ -6,6 +6,7 @@
     tools:context="uk.co.furiouslogic.hittimer.SplashActivity">
 
     <ImageView
+        android:id="@+id/imgFlLogo"
         android:contentDescription="@string/splash_contentDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -20,8 +21,15 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="@string/splashScreenText"
         android:textColor="#0090d3"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="250dp"/>
+        android:layout_below="@id/imgFlLogo"
+        android:layout_centerHorizontal="true" />
+
+    <EditText
+        android:id="@+id/tvSplashStatus"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:textAlignment="center"
+        />
 
 </RelativeLayout>
