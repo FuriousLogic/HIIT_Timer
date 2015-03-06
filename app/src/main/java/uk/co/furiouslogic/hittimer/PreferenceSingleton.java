@@ -10,6 +10,7 @@ import android.preference.PreferenceManager;
 public class PreferenceSingleton {
     private static Context _applicationContext;
 
+    //todo: sound switch
     public static void Initialise(Context context) {
         _applicationContext = context;
 

@@ -30,15 +30,17 @@ public class DbHandlerSingleton {
     private static void CreateOrOpenDb(){
         //Setup Data
         _db.execSQL("CREATE TABLE IF NOT EXISTS workout(timestamp INTEGER);");
-        _db.execSQL("CREATE TABLE IF NOT EXISTS log(message TEXT);");
+        _db.execSQL("CREATE TABLE IF NOT EXISTS log(timestamp Integer, message TEXT);");
 
         _db.execSQL("delete from log");
     }
 
+    //todo: Only do this during debug
     public static void SaveToLog(String message){
-//        ContentValues cv = new ContentValues();
-//        cv.put("message", message);
-//        _db.insert("log", null, cv);
+        ContentValues cv = new ContentValues();
+        cv.put("timestamp", System.currentTimeMillis());
+        cv.put("message", message);
+        _db.insert("log", null, cv);
     }
 
     public static int getWorkoutCount() {

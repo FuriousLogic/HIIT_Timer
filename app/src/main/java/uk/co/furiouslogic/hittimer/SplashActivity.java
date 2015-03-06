@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 
 //todo: make proper image that includes text
+//todo: show progress of loading stuff
 public class SplashActivity extends Activity {
 
     @Override
