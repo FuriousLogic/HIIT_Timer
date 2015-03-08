@@ -74,6 +74,8 @@ public class StateDetails {
 
                 secondTracker += _secondsPower;
                 if (workoutSecondsGone < secondTracker) {
+                    if(_stageName!="On") SoundsSingleton.playStartSound();
+
                     _stageSecond = secondTracker - workoutSecondsGone;
                     _backgroundColour = bOn;
                     _foregroundColour = tOn;
@@ -86,6 +88,8 @@ public class StateDetails {
                 }
                 secondTracker += _secondsRest;
                 if (workoutSecondsGone < secondTracker) {
+                    if(_stageName=="On") SoundsSingleton.playStopSound();
+
                     _stageSecond = secondTracker - workoutSecondsGone;
                     _backgroundColour = bRest;
                     _foregroundColour = tRest;
@@ -94,6 +98,7 @@ public class StateDetails {
                 }
 
             }
+            SoundsSingleton.playStopSound();
             secondTracker += _secondsCoolDown;
             _currentRep = 0;
             _stageSecond = secondTracker - workoutSecondsGone;

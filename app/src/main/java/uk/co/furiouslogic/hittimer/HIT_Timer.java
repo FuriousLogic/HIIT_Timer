@@ -290,7 +290,6 @@ public class HIT_Timer extends ActionBarActivity {
 
         @Override
         protected Boolean doInBackground(Integer... params) {
-            SoundsSingleton.playStartSound();
             int startSecond = params[0];
             int currentSecond = startSecond;
             int finalSecond = params[1];

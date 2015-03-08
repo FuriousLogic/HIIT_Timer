@@ -10,7 +10,9 @@ import android.preference.PreferenceManager;
 public class PreferenceSingleton {
     private static Context _applicationContext;
 
-    //todo: sound switch
+    //todo: don't save string if it's not
+    //todo: make pref changes available this session
+    //todo: persist sound selection
     public static void Initialise(Context context) {
         _applicationContext = context;
 
@@ -22,6 +24,12 @@ public class PreferenceSingleton {
         SetInitialPreference("pref_cooldown", "120");
         SetInitialPreference("pref_reps", "3");
 
+//        SetInitialPreference("pref_sound", "0");
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(_applicationContext);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putBoolean("pref_sound", false);
+        editor.apply();
+
     }
 
     private static void SetInitialPreference(String key, String defaultValue) {
@@ -31,13 +39,16 @@ public class PreferenceSingleton {
     }
 
     public static String GetPrefString(String key) {
-        //Context context = getApplicationContext();
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(_applicationContext);
         return pref.getString(key, "");
     }
 
+    public static boolean GetPrefBool(String key) {
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(_applicationContext);
+        return pref.getBoolean(key, false);
+    }
+
     public static void SetPrefString(String key, final String value) {
-        //Context context = getApplicationContext();
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(_applicationContext);
         SharedPreferences.Editor editor = settings.edit();
         editor.putString(key, value);

@@ -8,7 +8,6 @@ import android.os.Handler;
 import android.widget.TextView;
 
 //todo: make proper image that includes text
-//todo: show progress of loading stuff
 public class SplashActivity extends Activity {
 
     @Override
