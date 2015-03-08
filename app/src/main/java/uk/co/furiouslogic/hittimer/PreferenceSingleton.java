@@ -25,10 +25,11 @@ public class PreferenceSingleton {
         SetInitialPreference("pref_reps", "3");
 
 //        SetInitialPreference("pref_sound", "0");
-        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(_applicationContext);
-        SharedPreferences.Editor editor = settings.edit();
-        editor.putBoolean("pref_sound", false);
-        editor.apply();
+//        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(_applicationContext);
+//        settings.getBoolean("pref_sound",null);
+//        SharedPreferences.Editor editor = settings.edit();
+//        editor.putBoolean("pref_sound", false);
+//        editor.apply();
 
     }
 
