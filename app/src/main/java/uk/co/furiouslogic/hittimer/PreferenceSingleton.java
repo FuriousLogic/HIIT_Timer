@@ -11,8 +11,6 @@ public class PreferenceSingleton {
     private static Context _applicationContext;
 
     //todo: don't save string if it's not
-    //todo: make pref changes available this session
-    //todo: persist sound selection
     public static void Initialise(Context context) {
         _applicationContext = context;
 

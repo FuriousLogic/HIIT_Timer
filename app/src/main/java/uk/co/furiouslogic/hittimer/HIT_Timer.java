@@ -257,7 +257,7 @@ public class HIT_Timer extends ActionBarActivity {
 
     private StateDetails getStageDetailsClass() {
 
-        if (_stateDetails != null) return _stateDetails;
+        if (isRunning) return _stateDetails;
 
         //Get prefs
         String sWarmUp = PreferenceSingleton.GetPrefString("pref_warmup");
