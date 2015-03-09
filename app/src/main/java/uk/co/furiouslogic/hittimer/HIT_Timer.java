@@ -24,14 +24,6 @@ import com.pollfish.main.PollFish;
 //todo: notifications on workouts to do this week
 
 public class HIT_Timer extends ActionBarActivity {
-    //Workout flags
-    private Boolean warmUpDone = false;
-    private Boolean powerDone = false;
-    private Boolean restDone = false;
-    private Boolean coolDownDone = false;
-    private int currentRep = 0;
-    private int currentSecondsToGo = 0;
-    private boolean allowRepToIncrease = false;
     private boolean isRunning = false;
 
     //Instance State Value Names
@@ -270,8 +262,7 @@ public class HIT_Timer extends ActionBarActivity {
         int secondsRest = Integer.parseInt(sRest);
         int secondsCoolDown = Integer.parseInt(sCoolDown);
         int repsCount = Integer.parseInt(sReps);
-        StateDetails sd = new StateDetails(secondsWarmUp, secondsPower, secondsRest, secondsCoolDown, repsCount);
-        return sd;
+        return new StateDetails(secondsWarmUp, secondsPower, secondsRest, secondsCoolDown, repsCount);
 
     }
 
@@ -290,8 +281,7 @@ public class HIT_Timer extends ActionBarActivity {
 
         @Override
         protected Boolean doInBackground(Integer... params) {
-            int startSecond = params[0];
-            int currentSecond = startSecond;
+            int currentSecond = params[0];
             int finalSecond = params[1];
             long initialMillis = System.currentTimeMillis();
 
