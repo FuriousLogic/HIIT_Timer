@@ -15,6 +15,7 @@
             android:title="@string/athleteName_title"
             android:summary="@string/athleteName_summary"
             android:dialogTitle="@string/athleteName_dialogue"
+            android:defaultValue="Your Name"
             />
     </PreferenceCategory>
 
