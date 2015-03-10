@@ -66,7 +66,6 @@ public class StateDetails {
             _backgroundColour = bWarmUp;
             _foregroundColour = tWarmUp;
             _stageName = "Warm Up";
-            return;
         } else {
             int secondTracker = _secondsWarmUp;
             while (_currentRep <= _repsCount) {
@@ -74,7 +73,7 @@ public class StateDetails {
 
                 secondTracker += _secondsPower;
                 if (workoutSecondsGone < secondTracker) {
-                    if(_stageName!="On") SoundsSingleton.playStartSound();
+                    if (!_stageName.equals("On")) SoundsSingleton.playStartSound();
 
                     _stageSecond = secondTracker - workoutSecondsGone;
                     _backgroundColour = bOn;
@@ -88,7 +87,7 @@ public class StateDetails {
                 }
                 secondTracker += _secondsRest;
                 if (workoutSecondsGone < secondTracker) {
-                    if(_stageName=="On") SoundsSingleton.playStopSound();
+                    if (_stageName.equals("On")) SoundsSingleton.playStopSound();
 
                     _stageSecond = secondTracker - workoutSecondsGone;
                     _backgroundColour = bRest;

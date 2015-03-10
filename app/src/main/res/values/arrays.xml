@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--todo: other languages-->
 <resources>
     <!--Warm up-->
     <string-array name="warmup_types">

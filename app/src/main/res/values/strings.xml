@@ -49,5 +49,8 @@
     <string name="reps_title">Reps</string>
     <string name="reps_summary">Choose number of reps</string>
     <string name="title_activity_xxx">xxxActivity</string>
+    <string name="Sound_title">Sound</string>
+    <string name="Sound_summary">Warning beeps during workout</string>
+    <string name="Sound_dialog_title">Sounds</string>
 
 </resources>

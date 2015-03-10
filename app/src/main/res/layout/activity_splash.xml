@@ -30,6 +30,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:textAlignment="center"
-        />
+        android:inputType="none" />
 
 </RelativeLayout>

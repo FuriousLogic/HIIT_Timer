@@ -33,7 +33,7 @@ public class PreferenceSingleton {
 
     private static void SetInitialPreference(String key, String defaultValue) {
         String currentValue = GetPrefString(key);
-        if(currentValue == "")
+        if(currentValue.equals(""))
             SetPrefString(key, defaultValue);
     }
 

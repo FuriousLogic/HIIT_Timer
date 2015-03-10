@@ -289,6 +289,7 @@ public class HIT_Timer extends ActionBarActivity {
 
     public void workoutIsFinished() {
         isRunning = false;
+        DbHandlerSingleton.saveNewWorkout();
         tvCountDown.setText("YAY");
     }
 

@@ -64,9 +64,9 @@
         >
         <SwitchPreference
             android:key="pref_sound"
-            android:title="Sound"
-            android:summary="Warning beeps during workout"
-            android:dialogTitle="Sounds"
+            android:title="@string/Sound_title"
+            android:summary="@string/Sound_summary"
+            android:dialogTitle="@string/Sound_dialog_title"
             android:defaultValue="false"
             />
     </PreferenceCategory>

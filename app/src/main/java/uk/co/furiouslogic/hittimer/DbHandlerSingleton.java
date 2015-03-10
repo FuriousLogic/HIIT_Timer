@@ -45,9 +45,8 @@ public class DbHandlerSingleton {
 
     public static int getWorkoutCount() {
         Cursor c = getCursor("select * from workout");
-        int count = c.getCount();
 
-        return count;
+        return c.getCount();
     }
 
     public static Cursor getCursor(String sql) {
@@ -70,7 +69,6 @@ public class DbHandlerSingleton {
         if(c.getCount()==0) return null;
 
         c = getCursor("select max(timestamp) as lastWorkout from workout");
-        Date dateOfLastWorkout = new Date(c.getLong(0));
-        return dateOfLastWorkout;
+        return new Date(c.getLong(0));
     }
 }
