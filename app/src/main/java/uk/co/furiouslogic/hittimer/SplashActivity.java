@@ -41,7 +41,6 @@ public class SplashActivity extends Activity {
         long timeLeftToWaitMs = totalMsDelayRequired - timeTakenSoFarMs;
         if(timeLeftToWaitMs <= 0) return;
 
-        long myTimer = timeLeftToWaitMs;
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -49,7 +48,7 @@ public class SplashActivity extends Activity {
                 startActivity(i);
                 finish();
             }
-        },myTimer);
+        }, timeLeftToWaitMs);
     }
 
 }

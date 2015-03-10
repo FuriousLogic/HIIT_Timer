@@ -1,17 +1,10 @@
 package uk.co.furiouslogic.hittimer;
 
 import android.content.ContentValues;
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.preference.PreferenceManager;
-import android.support.v7.app.ActionBarActivity;
-import android.view.View;
 
 import java.util.Date;
-
-import static android.database.sqlite.SQLiteDatabase.openOrCreateDatabase;
 
 /**
  * Created by Barry on 09/02/2015.
