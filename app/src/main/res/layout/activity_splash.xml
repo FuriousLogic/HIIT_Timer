@@ -14,13 +14,13 @@
         android:layout_centerHorizontal="true"
         android:src="@drawable/splashscreenimage_small"
         android:layout_marginTop="113dp"/>
-
-    <EditText
-        android:id="@+id/tvSplashStatus"
-        android:layout_width="fill_parent"
+    <TextView
+        android:id="@+id/tvVersion"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:textAlignment="center"
-        android:inputType="none" />
+        android:layout_alignParentLeft="true"
+        android:editable="false"
+        />
 
 </RelativeLayout>

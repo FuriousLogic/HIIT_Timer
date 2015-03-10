@@ -2,6 +2,8 @@ package uk.co.furiouslogic.hittimer;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
@@ -17,26 +19,29 @@ public class SplashActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
+        TextView tvVersion = (TextView) findViewById(R.id.tvVersion);
+        try {
+            PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+            String version = pInfo.versionName;
+            tvVersion.setText("v " + version);
+        } catch (PackageManager.NameNotFoundException e) {
+            tvVersion.setText("");
+        }
+
         //Initialise DB
-        TextView splashStatus = (TextView) findViewById(R.id.tvSplashStatus);
-        splashStatus.setText("Initialising Database");
         SQLiteDatabase db = openOrCreateDatabase("uk.co.furiouslogic.hit_timer", MODE_PRIVATE, null);
         DbHandlerSingleton.Initialise(db);
 
         //Define Sounds
-        splashStatus.setText("Defining Sounds");
         SoundsSingleton.Initialise(this);
 
         //Setup Admob
-        splashStatus.setText("Setting up Admob");
         AdMobSingleton.Initialise();
 
         //Initialise Preferences
-        splashStatus.setText("Initialising Preferences");
         PreferenceSingleton.Initialise(getApplicationContext());
 
         //Residual timer
-        splashStatus.setText("");
         long timeTakenSoFarMs = System.currentTimeMillis() - startTimeMillis;
         long timeLeftToWaitMs = totalMsDelayRequired - timeTakenSoFarMs;
         if(timeLeftToWaitMs <= 0) return;
