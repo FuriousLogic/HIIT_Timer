@@ -17,6 +17,8 @@ import com.google.android.gms.ads.AdView;
 import com.pollfish.constants.Position;
 import com.pollfish.main.PollFish;
 
+import java.util.Date;
+
 //import com.google.android.gms.games.internal.constants.TimeSpan;
 
 //todo: Make beeps distinct - make beeps myself (Ruby's keyboard?)
@@ -25,10 +27,12 @@ import com.pollfish.main.PollFish;
 
 public class HIT_Timer extends ActionBarActivity {
     private boolean isRunning = false;
+    private boolean _lastWorkoutMessageAlreadyShown = false;
 
     //Instance State Value Names
     final String workoutSecondsGoneKey = "workoutSecondsGoneKey";
     final String isRunningKey = "isRunningKey";
+    final String _lastWorkoutMessageAlreadyShownKey = "_lastWorkoutMessageAlreadyShown";
 
     //Controls
     private RelativeLayout rlHitTimer;
@@ -61,28 +65,7 @@ public class HIT_Timer extends ActionBarActivity {
         tvAthleteName = (TextView) findViewById(R.id.tvAthleteName);
         btnStartTimer = (Button) findViewById(R.id.btnStartTimer);
 
-        //Time since last workout
-//        Date now = new Date(System.currentTimeMillis());
-//        Date lastWorkout = dbh.getDateOfLastWorkout();
-//        String timeSinceLastWorkoutMessage;
-//        if(lastWorkout != null) {
-//            long diffInMs = now.getTime() - lastWorkout.getTime();
-//            long seconds = diffInMs / 1000;
-//            seconds /= 60;
-//            long minutesLeft = seconds % 60;
-//            seconds /= 60;
-//            long hoursLeft = seconds % 24;
-//            seconds /= 24;
-//            long daysLeft = seconds;
-//            timeSinceLastWorkoutMessage = "Time Since Last Workout: \r\n";
-//            if (daysLeft > 0) timeSinceLastWorkoutMessage += daysLeft + " days, ";
-//            timeSinceLastWorkoutMessage += hoursLeft + " hours, ";
-//            timeSinceLastWorkoutMessage += minutesLeft + " minutes";
-//        } else{
-//            timeSinceLastWorkoutMessage = "No workouts completed";
-//        }
-//
-//        showPopupMessage("Last Workout", timeSinceLastWorkoutMessage);
+
     }
 
     private void showState() {
@@ -114,6 +97,35 @@ public class HIT_Timer extends ActionBarActivity {
         super.onResume();
         showState();
         PollFish.init(this, "d196dcd2-c1c9-48bd-908b-b371cc3bcd89", Position.TOP_LEFT, 50);
+
+        //Last Workout Message
+        if (!_lastWorkoutMessageAlreadyShown) {
+
+            _lastWorkoutMessageAlreadyShown=true;
+
+            //Time since last workout
+            Date now = new Date(System.currentTimeMillis());
+            Date lastWorkout = DbHandlerSingleton.getDateOfLastWorkout();
+            String timeSinceLastWorkoutMessage;
+            if (lastWorkout != null) {
+                long diffInMs = now.getTime() - lastWorkout.getTime();
+                long seconds = diffInMs / 1000;
+                seconds /= 60;
+                long minutesLeft = seconds % 60;
+                seconds /= 60;
+                long hoursLeft = seconds % 24;
+                seconds /= 24;
+                long daysLeft = seconds;
+                timeSinceLastWorkoutMessage = "Time Since Last Workout: \r\n";
+                if (daysLeft > 0) timeSinceLastWorkoutMessage += daysLeft + " days, ";
+                timeSinceLastWorkoutMessage += hoursLeft + " hours, ";
+                timeSinceLastWorkoutMessage += minutesLeft + " minutes";
+            } else {
+                timeSinceLastWorkoutMessage = "No workouts completed";
+            }
+
+            showPopupMessage("Last Workout", timeSinceLastWorkoutMessage);
+        }
     }
 
     @Override
@@ -127,7 +139,9 @@ public class HIT_Timer extends ActionBarActivity {
         DbHandlerSingleton.SaveToLog("onDestroy");
         super.onDestroy();
         isRunning = false;
-        workout.cancel(true);
+        if (workout != null) {
+            workout.cancel(true);
+        }
     }
 
     @Override
@@ -162,6 +176,7 @@ public class HIT_Timer extends ActionBarActivity {
 
         savedInstanceState.putInt(workoutSecondsGoneKey, workoutSecondsGone);
         savedInstanceState.putBoolean(isRunningKey, isRunning);
+        savedInstanceState.putBoolean(_lastWorkoutMessageAlreadyShownKey, _lastWorkoutMessageAlreadyShown);
 
         if (isRunning)
             workout.cancel(true);
@@ -175,6 +190,7 @@ public class HIT_Timer extends ActionBarActivity {
         //Get data from state
         workoutSecondsGone = savedInstanceState.getInt(workoutSecondsGoneKey);
         isRunning = savedInstanceState.getBoolean(isRunningKey);
+        _lastWorkoutMessageAlreadyShown = savedInstanceState.getBoolean(_lastWorkoutMessageAlreadyShownKey);
 
         //Zero the state
         savedInstanceState.clear();
