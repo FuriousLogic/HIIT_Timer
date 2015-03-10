@@ -12,17 +12,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:src="@drawable/fl_logo_30pc"
+        android:src="@drawable/splashscreenimage_small"
         android:layout_marginTop="113dp"/>
-    <TextView
-        android:id="@+id/tvSplashText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/splashScreenText"
-        android:textColor="#0090d3"
-        android:layout_below="@id/imgFlLogo"
-        android:layout_centerHorizontal="true" />
 
     <EditText
         android:id="@+id/tvSplashStatus"

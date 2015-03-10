@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--todo: other languages-->
+<!--
+    Spanish (60%)
+    German (45%)
+    French (40%)
+    Portuguese (30%)
+    Italian (25%)
+    -->
 <resources>
     <!--Warm up-->
     <string-array name="warmup_types">
