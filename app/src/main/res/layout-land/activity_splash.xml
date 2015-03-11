@@ -1,0 +1,24 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="uk.co.furiouslogic.hittimer.SplashActivity">
+
+    <ImageView
+        android:contentDescription="@string/splash_contentDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/splashscreenimage_small"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
+    <TextView
+        android:id="@+id/tvVersion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:editable="false"
+        />
+
+</RelativeLayout>

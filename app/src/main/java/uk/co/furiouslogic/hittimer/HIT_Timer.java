@@ -73,7 +73,6 @@ public class HIT_Timer extends ActionBarActivity {
         if (!isRunning) workoutSecondsGone = 0;
         _stateDetails = getStageDetailsClass();
 
-        DbHandlerSingleton.SaveToLog("showState: _stateDetails.WorkoutSecondsGone(" + workoutSecondsGone + ");");
         _stateDetails.WorkoutSecondsGone(workoutSecondsGone, isRunning);
 
         //Paint Screen
@@ -184,23 +183,30 @@ public class HIT_Timer extends ActionBarActivity {
 
     @Override
     public void onRestoreInstanceState(Bundle savedInstanceState) {
-        DbHandlerSingleton.SaveToLog("onRestoreInstanceState");
-        super.onRestoreInstanceState(savedInstanceState);
+        try {
+            DbHandlerSingleton.SaveToLog("onRestoreInstanceState");
+            super.onRestoreInstanceState(savedInstanceState);
 
-        //Get data from state
-        workoutSecondsGone = savedInstanceState.getInt(workoutSecondsGoneKey);
-        isRunning = savedInstanceState.getBoolean(isRunningKey);
-        _lastWorkoutMessageAlreadyShown = savedInstanceState.getBoolean(_lastWorkoutMessageAlreadyShownKey);
+            //Get data from state
+            _stateDetails = getStageDetailsClass();
+            workoutSecondsGone = savedInstanceState.getInt(workoutSecondsGoneKey);
+            isRunning = savedInstanceState.getBoolean(isRunningKey);
+            _lastWorkoutMessageAlreadyShown = savedInstanceState.getBoolean(_lastWorkoutMessageAlreadyShownKey);
 
-        //Zero the state
-        savedInstanceState.clear();
+            //Zero the state
+            savedInstanceState.clear();
 
-        //Do we need to restart the timer?
-        if (!isRunning) {
-            return;
+            //Do we need to restart the timer?
+            if (!isRunning) {
+                return;
+            }
+
+            int totalSecondsInWorkout = _stateDetails.TotalSecondsInWorkout();
+            workout = (Workout) new Workout().execute(workoutSecondsGone, totalSecondsInWorkout);
+
+        } catch (Exception e) {
+            DbHandlerSingleton.SaveToLog(e.getMessage());
         }
-        _stateDetails = getStageDetailsClass();
-        workout = (Workout) new Workout().execute(workoutSecondsGone, _stateDetails.TotalSecondsInWorkout());
     }
 
     private void showAthleteNameAndWorkoutCount() {
@@ -298,6 +304,7 @@ public class HIT_Timer extends ActionBarActivity {
 
         @Override
         protected Boolean doInBackground(Integer... params) {
+            DbHandlerSingleton.SaveToLog("doInBackground");
             int currentSecond = params[0];
             int finalSecond = params[1];
             long initialMillis = System.currentTimeMillis();
@@ -310,7 +317,6 @@ public class HIT_Timer extends ActionBarActivity {
                     if (isCancelled()) {
                         return null;
                     }
-                    DbHandlerSingleton.SaveToLog("doInBackground. publishProgress(" + currentSecond + ") ");
                     publishProgress(currentSecond);
                     currentSecond++;
                 }
@@ -322,7 +328,6 @@ public class HIT_Timer extends ActionBarActivity {
         @Override
         protected void onProgressUpdate(Integer... values) {
             super.onProgressUpdate(values);
-            DbHandlerSingleton.SaveToLog("onProgressUpdate: displayWorkoutState(" + values[0] + ");");
             displayWorkoutState(values[0]);
         }
 
