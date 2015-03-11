@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Los HIIT Timer</string>
+    <string name="action_settings">Settings</string>
+    <string name="splashScreenText">Furious Logic</string>
+    <string name="banner_ad_unit_id">ca-app-pub-1743099204773472/4963325344</string>
+    <string name="stageInitialText">stage</string>
+    <string name="repText">Rep</string>
+    <string name="warmUpText">Warm up</string>
+    <string name="powerText">Power</string>
+    <string name="restText">Rest</string>
+    <string name="coolDownText">Cool Down</string>
+    <string name="startTimerButtonText">Start Timer</string>
+    <string name="cancelTimerButtonText">Cancel</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="ic_action_about">About</string>
+    <string name="Name">Name</string>
+    <string name="UserName">User Name</string>
+    <string name="WarmUpTitle">Warm Up (sec)</string>
+    <string name="WarmUpHint">Warm Up (seconds)</string>
+    <string name="PowerTitle">Power (sec)</string>
+    <string name="PowerHint">Power (seconds)</string>
+    <string name="RestTitle">Rest (sec)</string>
+    <string name="RestHint">Rest (seconds)</string>
+    <string name="CoolDownTitle">Cool Down (sec)</string>
+    <string name="CoolDownHint">CoolDown (seconds)</string>
+    <string name="RepsTitle">Reps</string>
+    <string name="RepsHint">Reps</string>
+    <string name="TimmonsRegimineButton">Timmons Regimen</string>
+    <string name="WingateProtocolButton">Wingate Protocol (tougher)</string>
+    <string name="SaveButton">Save</string>
+    <string name="title_activity_settings">Settings</string>
+    <string name="preferences_title">Preferences</string>
+    <string name="splash_contentDescription">FL Logo</string>
+    <string name="athleteName_title">Athlete Name</string>
+    <string name="athleteName_summary">Name will show on main app screen</string>
+    <string name="athleteName_dialogue">Enter name</string>
+    <string name="category_user">User</string>
+    <string name="category_workout">Workout</string>
+    <string name="warmUp_title">Warm Up</string>
+    <string name="warmUp_summary">Choose warm up period</string>
+    <string name="power_title">Power</string>
+    <string name="power_summary">Choose power duration</string>
+    <string name="rest_title">Rest</string>
+    <string name="rest_summary">Choose rest period</string>
+    <string name="coolDown_title">Cool Down</string>
+    <string name="coolDown_summary">Choose cool down period</string>
+    <string name="reps_title">Reps</string>
+    <string name="reps_summary">Choose number of reps</string>
+    <string name="title_activity_xxx">xxxActivity</string>
+    <string name="Sound_title">Sound</string>
+    <string name="Sound_summary">Warning beeps during workout</string>
+    <string name="Sound_dialog_title">Sounds</string>
+
+</resources>

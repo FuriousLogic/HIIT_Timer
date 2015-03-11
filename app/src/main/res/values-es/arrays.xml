@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--todo: other languages-->
+<!--
+    Spanish (60%)
+    German (45%)
+    French (40%)
+    Portuguese (30%)
+    Italian (25%)
+    -->
+<resources>
+    <!--Warm up-->
+    <string-array name="warmup_types">
+        <item>1 minute</item>
+        <item>2 minutes</item>
+        <item>3 minutes</item>
+    </string-array>
+    <string-array name="warmup_values">
+        <item>60</item>
+        <item>120</item>
+        <item>180</item>
+    </string-array>
+
+    <!--Power-->
+    <string-array name="power_types">
+        <item>10 seconds</item>
+        <item>20 seconds</item>
+        <item>30 seconds</item>
+    </string-array>
+    <string-array name="power_values">
+        <item>10</item>
+        <item>20</item>
+        <item>30</item>
+    </string-array>
+
+    <!--Rest-->
+    <string-array name="rest_types">
+        <item>1 minute</item>
+        <item>2 minutes</item>
+        <item>3 minutes</item>
+    </string-array>
+    <string-array name="rest_values">
+        <item>60</item>
+        <item>120</item>
+        <item>180</item>
+    </string-array>
+
+    <!--Cool down-->
+    <string-array name="cooldown_types">
+        <item>1 minute</item>
+        <item>2 minutes</item>
+        <item>3 minutes</item>
+    </string-array>
+    <string-array name="cooldown_values">
+        <item>60</item>
+        <item>120</item>
+        <item>180</item>
+    </string-array>
+
+    <!--Reps-->
+    <string-array name="reps_types">
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+    </string-array>
+    <string-array name="reps_values">
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+    </string-array>
+</resources>
