@@ -40,5 +40,6 @@
     <string name="Warm_Up_Stage_seconds">Warm Up Stage (seconds)</string>
     <string name="YAY">YAY</string>
     <string name="Your_Name">Your Name</string>
+    <string name="Error">Error</string>
 
 </resources>

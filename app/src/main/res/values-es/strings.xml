@@ -40,5 +40,6 @@
     <string name="YAY">:)</string>
     <string name="Last_Workout">Último entrenamiento</string>
     <string name="Your_Name">Su Nombre</string>
+    <string name="Error">Error</string>
 
 </resources>

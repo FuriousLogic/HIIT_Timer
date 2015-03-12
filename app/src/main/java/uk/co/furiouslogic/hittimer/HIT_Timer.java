@@ -49,137 +49,171 @@ public class HIT_Timer extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        DbHandlerSingleton.SaveToLog("onCreate");
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_hit__timer);
+        try {
+            DbHandlerSingleton.SaveToLog("onCreate");
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_hit__timer);
 
-        //Admob
-        AdView avTimerBanner = (AdView) findViewById(R.id.avTimerBanner);
-        avTimerBanner.loadAd(AdMobSingleton.GetAdRequest());
+            //Admob
+            AdView avTimerBanner = (AdView) findViewById(R.id.avTimerBanner);
+            avTimerBanner.loadAd(AdMobSingleton.GetAdRequest());
 
-        //Get Controls
-        rlHitTimer = (RelativeLayout) findViewById(R.id.rlHitTimer);
-        tvStage = (TextView) findViewById(R.id.tvStage);
-        tvCountDown = (TextView) findViewById(R.id.tvCountDown);
-        tvRep = (TextView) findViewById(R.id.tvRep);
-        tvAthleteName = (TextView) findViewById(R.id.tvAthleteName);
-        btnStartTimer = (Button) findViewById(R.id.btnStartTimer);
-
-
+            //Get Controls
+            rlHitTimer = (RelativeLayout) findViewById(R.id.rlHitTimer);
+            tvStage = (TextView) findViewById(R.id.tvStage);
+            tvCountDown = (TextView) findViewById(R.id.tvCountDown);
+            tvRep = (TextView) findViewById(R.id.tvRep);
+            tvAthleteName = (TextView) findViewById(R.id.tvAthleteName);
+            btnStartTimer = (Button) findViewById(R.id.btnStartTimer);
+        } catch (Exception e) {
+            processError(e);
+        }
     }
 
     private void showState() {
-        DbHandlerSingleton.SaveToLog("showState");
-        if (!isRunning) workoutSecondsGone = 0;
-        _stateDetails = getStageDetailsClass();
+        try {
+            DbHandlerSingleton.SaveToLog("showState");
+            if (!isRunning) workoutSecondsGone = 0;
+            _stateDetails = getStageDetailsClass();
 
-        _stateDetails.WorkoutSecondsGone(workoutSecondsGone, isRunning);
+            _stateDetails.WorkoutSecondsGone(workoutSecondsGone, isRunning);
 
-        //Paint Screen
-        String repText = String.valueOf(_stateDetails.CurrentRep()) + " / " + String.valueOf(_stateDetails.RepsCount());
-        tvStage.setText(_stateDetails.StageName());
-        tvCountDown.setText((String.valueOf(_stateDetails.StageSecond())));
-        tvRep.setText(repText);
-        setStageColour(_stateDetails.BackgroundColour(), _stateDetails.ForegroundColour());
+            //Paint Screen
+            String repText = String.valueOf(_stateDetails.CurrentRep()) + " / " + String.valueOf(_stateDetails.RepsCount());
+            tvStage.setText(_stateDetails.StageName());
+            tvCountDown.setText((String.valueOf(_stateDetails.StageSecond())));
+            tvRep.setText(repText);
+            setStageColour(_stateDetails.BackgroundColour(), _stateDetails.ForegroundColour());
+        } catch (Exception e) {
+            processError(e);
+        }
     }
 
     @Override
     public void onStart() {
-        DbHandlerSingleton.SaveToLog("onStart");
-        super.onStart();
-        showAthleteNameAndWorkoutCount();
+        try {
+            DbHandlerSingleton.SaveToLog("onStart");
+            super.onStart();
+            showAthleteNameAndWorkoutCount();
+        } catch (Exception e) {
+            processError(e);
+        }
     }
 
     @Override
     public void onResume() {
-        DbHandlerSingleton.SaveToLog("onResume");
-        super.onResume();
-        showState();
-        PollFish.init(this, "d196dcd2-c1c9-48bd-908b-b371cc3bcd89", Position.TOP_LEFT, 50);
+        try {
+            DbHandlerSingleton.SaveToLog("onResume");
+            super.onResume();
+            showState();
+            PollFish.init(this, "d196dcd2-c1c9-48bd-908b-b371cc3bcd89", Position.TOP_LEFT, 50);
 
-        //Last Workout Message
-        if (!_lastWorkoutMessageAlreadyShown) {
+            //Last Workout Message
+            if (!_lastWorkoutMessageAlreadyShown) {
 
-            _lastWorkoutMessageAlreadyShown = true;
+                _lastWorkoutMessageAlreadyShown = true;
 
-            //Time since last workout
-            Date now = new Date(System.currentTimeMillis());
-            Date lastWorkout = DbHandlerSingleton.getDateOfLastWorkout();
-            String timeSinceLastWorkoutMessage;
-            if (lastWorkout != null) {
-                long diffInMs = now.getTime() - lastWorkout.getTime();
-                long seconds = diffInMs / 1000;
-                seconds /= 60;
-                long minutesLeft = seconds % 60;
-                seconds /= 60;
-                long hoursLeft = seconds % 24;
-                seconds /= 24;
-                long daysLeft = seconds;
-                timeSinceLastWorkoutMessage = getString(R.string.Time_Since_Last_Workout) + ":\r\n";
-                if (daysLeft > 0)
-                    timeSinceLastWorkoutMessage += daysLeft + " " + getString(R.string.days) + ", ";
-                timeSinceLastWorkoutMessage += hoursLeft + " " + getString(R.string.hours) + ", ";
-                timeSinceLastWorkoutMessage += minutesLeft + " " + getString(R.string.minutes);
-            } else {
-                timeSinceLastWorkoutMessage = getString(R.string.No_workouts_completed);
+                //Time since last workout
+                Date now = new Date(System.currentTimeMillis());
+                Date lastWorkout = DbHandlerSingleton.getDateOfLastWorkout();
+                String timeSinceLastWorkoutMessage;
+                if (lastWorkout != null) {
+                    long diffInMs = now.getTime() - lastWorkout.getTime();
+                    long seconds = diffInMs / 1000;
+                    seconds /= 60;
+                    long minutesLeft = seconds % 60;
+                    seconds /= 60;
+                    long hoursLeft = seconds % 24;
+                    seconds /= 24;
+                    long daysLeft = seconds;
+                    timeSinceLastWorkoutMessage = getString(R.string.Time_Since_Last_Workout) + ":\r\n";
+                    if (daysLeft > 0)
+                        timeSinceLastWorkoutMessage += daysLeft + " " + getString(R.string.days) + ", ";
+                    timeSinceLastWorkoutMessage += hoursLeft + " " + getString(R.string.hours) + ", ";
+                    timeSinceLastWorkoutMessage += minutesLeft + " " + getString(R.string.minutes);
+                } else {
+                    timeSinceLastWorkoutMessage = getString(R.string.No_workouts_completed);
+                }
+
+                showPopupMessage(getString(R.string.Last_Workout), timeSinceLastWorkoutMessage);
             }
-
-            showPopupMessage(getString(R.string.Last_Workout), timeSinceLastWorkoutMessage);
+        } catch (Exception e) {
+            processError(e);
         }
     }
 
     @Override
     public void onStop() {
-        DbHandlerSingleton.SaveToLog("onStop");
-        super.onStop();
+        try {
+            DbHandlerSingleton.SaveToLog("onStop");
+            super.onStop();
+        } catch (Exception e) {
+            processError(e);
+        }
     }
 
     @Override
     public void onDestroy() {
-        DbHandlerSingleton.SaveToLog("onDestroy");
-        super.onDestroy();
-        isRunning = false;
-        if (workout != null) {
-            workout.cancel(true);
+        try {
+            DbHandlerSingleton.SaveToLog("onDestroy");
+            super.onDestroy();
+            isRunning = false;
+            if (workout != null) {
+                workout.cancel(true);
+            }
+        } catch (Exception e) {
+            processError(e);
         }
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        DbHandlerSingleton.SaveToLog("onCreateOptionsMenu");
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_hit__timer, menu);
-        return true;
+        try {
+            DbHandlerSingleton.SaveToLog("onCreateOptionsMenu");
+            // Inflate the menu; this adds items to the action bar if it is present.
+            getMenuInflater().inflate(R.menu.menu_hit__timer, menu);
+            return true;
+        } catch (Exception e) {
+            processError(e);
+        }
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        DbHandlerSingleton.SaveToLog("onOptionsItemSelected");
-        int id = item.getItemId();
+        try {
+            DbHandlerSingleton.SaveToLog("onOptionsItemSelected");
+            int id = item.getItemId();
 
-        switch (id) {
-            case R.id.action_settings:
-                showSettings();
-                return true;
-            case R.id.action_about:
-                showInfo();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+            switch (id) {
+                case R.id.action_settings:
+                    showSettings();
+                    return true;
+                case R.id.action_about:
+                    showInfo();
+                    return true;
+                default:
+                    return super.onOptionsItemSelected(item);
+            }
+        } catch (Exception e) {
+            processError(e);
         }
     }
 
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
-        DbHandlerSingleton.SaveToLog("onSaveInstanceState");
-        super.onSaveInstanceState(savedInstanceState);
+        try {
+            DbHandlerSingleton.SaveToLog("onSaveInstanceState");
+            super.onSaveInstanceState(savedInstanceState);
 
-        savedInstanceState.putInt(workoutSecondsGoneKey, workoutSecondsGone);
-        savedInstanceState.putBoolean(isRunningKey, isRunning);
-        savedInstanceState.putBoolean(_lastWorkoutMessageAlreadyShownKey, _lastWorkoutMessageAlreadyShown);
+            savedInstanceState.putInt(workoutSecondsGoneKey, workoutSecondsGone);
+            savedInstanceState.putBoolean(isRunningKey, isRunning);
+            savedInstanceState.putBoolean(_lastWorkoutMessageAlreadyShownKey, _lastWorkoutMessageAlreadyShown);
 
-        if (isRunning)
-            workout.cancel(true);
+            if (isRunning)
+                workout.cancel(true);
+        } catch (Exception e) {
+            processError(e);
+        }
     }
 
     @Override
@@ -206,8 +240,13 @@ public class HIT_Timer extends ActionBarActivity {
             workout = (Workout) new Workout().execute(workoutSecondsGone, totalSecondsInWorkout);
 
         } catch (Exception e) {
-            DbHandlerSingleton.SaveToLog(e.getMessage());
+            processError(e);
         }
+    }
+
+    private void processError(Exception e) {
+        GeneralAgent.ProcessError(e);
+        showPopupMessage(getString(R.string.Error), e.getMessage());
     }
 
     private void showAthleteNameAndWorkoutCount() {
@@ -253,17 +292,21 @@ public class HIT_Timer extends ActionBarActivity {
 
     public void btnStartTimer_Click(View view) {
 
-        if (btnStartTimer.getText() == getString(R.string.Start_Timer)) {
-            btnStartTimer.setText(getString(R.string.Cancel));
-            isRunning = true;
-            _stateDetails = getStageDetailsClass();
+        try {
+            if (btnStartTimer.getText() == getString(R.string.Start_Timer)) {
+                btnStartTimer.setText(getString(R.string.Cancel));
+                isRunning = true;
+                _stateDetails = getStageDetailsClass();
 
-            workout = (Workout) new Workout().execute(0, _stateDetails.TotalSecondsInWorkout());
-        } else {
-            if (workout != null) workout.cancel(true);
-            isRunning = false;
-            btnStartTimer.setText(R.string.Start_Timer);
-            showState();
+                workout = (Workout) new Workout().execute(0, _stateDetails.TotalSecondsInWorkout());
+            } else {
+                if (workout != null) workout.cancel(true);
+                isRunning = false;
+                btnStartTimer.setText(R.string.Start_Timer);
+                showState();
+            }
+        } catch (Exception e) {
+            processError(e);
         }
     }
 
@@ -287,14 +330,22 @@ public class HIT_Timer extends ActionBarActivity {
     }
 
     public void displayWorkoutState(Integer secondsGone) {
-        workoutSecondsGone = secondsGone;
-        showState();
+        try {
+            workoutSecondsGone = secondsGone;
+            showState();
+        } catch (Exception e) {
+            processError(e);
+        }
     }
 
     public void workoutIsFinished() {
-        isRunning = false;
-        DbHandlerSingleton.saveNewWorkout();
-        tvCountDown.setText(getString(R.string.YAY));
+        try {
+            isRunning = false;
+            DbHandlerSingleton.saveNewWorkout();
+            tvCountDown.setText(getString(R.string.YAY));
+        } catch (Exception e) {
+            processError(e);
+        }
     }
 
     private class Workout extends AsyncTask<Integer, Integer, Boolean> {
