@@ -1,59 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:title="@string/preferences_title"
+    android:title="@string/Preferences"
     android:layout_height="fill_parent"
     android:layout_width="fill_parent"
     >
     <!--todo:put all text in resource files-->
     <!--todo: change summary info on select-->
     <PreferenceCategory
-        android:title="@string/category_user"
+        android:title="@string/User"
         >
         <EditTextPreference
             android:key="pref_AthleteName"
-            android:title="@string/athleteName_title"
+            android:title="@string/Athlete_Name"
             android:summary="@string/athleteName_summary"
-            android:dialogTitle="@string/athleteName_dialogue"
+            android:dialogTitle="@string/Enter_name"
             android:defaultValue="Your Name"
             />
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:title="@string/category_workout"
+        android:title="@string/Workout"
         >
         <ListPreference
             android:key="pref_warmup"
-            android:title="@string/warmUp_title"
-            android:summary="@string/warmUp_summary"
+            android:title="@string/Warm_Up"
+            android:summary="@string/Warm_Up_Stage_seconds"
             android:entries="@array/warmup_types"
             android:entryValues="@array/warmup_values"
             />
         <ListPreference
             android:key="pref_power"
-            android:title="@string/power_title"
-            android:summary="@string/power_summary"
+            android:title="@string/Power"
+            android:summary="@string/Power_Stage_seconds"
             android:entries="@array/power_types"
             android:entryValues="@array/power_values"
             />
         <ListPreference
             android:key="pref_rest"
-            android:title="@string/rest_title"
-            android:summary="@string/rest_summary"
+            android:title="@string/Rest"
+            android:summary="@string/Rest_Stage_seconds"
             android:entries="@array/rest_types"
             android:entryValues="@array/rest_values"
             />
         <ListPreference
             android:key="pref_cooldown"
-            android:title="@string/coolDown_title"
+            android:title="@string/Cool_Down"
             android:summary="@string/coolDown_summary"
             android:entries="@array/cooldown_types"
             android:entryValues="@array/cooldown_values"
             />
         <ListPreference
             android:key="pref_reps"
-            android:title="@string/reps_title"
-            android:summary="@string/reps_summary"
+            android:title="@string/Reps"
+            android:summary="@string/Number_of_reps"
             android:entries="@array/reps_types"
             android:entryValues="@array/reps_values"
             />
@@ -64,9 +64,9 @@
         >
         <SwitchPreference
             android:key="pref_sound"
-            android:title="@string/Sound_title"
-            android:summary="@string/Sound_summary"
-            android:dialogTitle="@string/Sound_dialog_title"
+            android:title="@string/Sound"
+            android:summary="@string/Alert_sounds"
+            android:dialogTitle="@string/Sounds"
             android:defaultValue="false"
             />
     </PreferenceCategory>

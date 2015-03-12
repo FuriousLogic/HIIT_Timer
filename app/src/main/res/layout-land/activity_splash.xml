@@ -6,7 +6,7 @@
     tools:context="uk.co.furiouslogic.hittimer.SplashActivity">
 
     <ImageView
-        android:contentDescription="@string/splash_contentDescription"
+        android:contentDescription="@string/FL_Logo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/splashscreenimage_small"

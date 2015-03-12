@@ -3,13 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools" tools:context=".HIT_Timer">
     <item
         android:id="@+id/action_settings"
-        android:title="@string/action_settings"
+        android:title="@string/Preferences"
         android:orderInCategory="100"
         app:showAsAction="never"
         />
     <item
         android:id="@+id/action_about"
-        android:title="@string/ic_action_about"
+        android:title="@string/About"
         android:orderInCategory="100"
         app:showAsAction="never"
         />

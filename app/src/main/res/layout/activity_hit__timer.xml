@@ -61,7 +61,7 @@
         android:layout_above="@id/avTimerBanner"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="@string/startTimerButtonText"
+        android:text="@string/Start_Timer"
         android:onClick="btnStartTimer_Click"
         />
 

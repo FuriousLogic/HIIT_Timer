@@ -117,7 +117,7 @@ public class HIT_Timer extends ActionBarActivity {
                 long daysLeft = seconds;
                 timeSinceLastWorkoutMessage = getString(R.string.Time_Since_Last_Workout) + ":\r\n";
                 if (daysLeft > 0)
-                    timeSinceLastWorkoutMessage += daysLeft + " " + getString(R.string.Days) + ", ";
+                    timeSinceLastWorkoutMessage += daysLeft + " " + getString(R.string.days) + ", ";
                 timeSinceLastWorkoutMessage += hoursLeft + " " + getString(R.string.hours) + ", ";
                 timeSinceLastWorkoutMessage += minutesLeft + " " + getString(R.string.minutes);
             } else {
@@ -253,8 +253,8 @@ public class HIT_Timer extends ActionBarActivity {
 
     public void btnStartTimer_Click(View view) {
 
-        if (btnStartTimer.getText() == getString(R.string.startTimerButtonText)) {
-            btnStartTimer.setText(getString(R.string.cancelTimerButtonText));
+        if (btnStartTimer.getText() == getString(R.string.Start_Timer)) {
+            btnStartTimer.setText(getString(R.string.Cancel));
             isRunning = true;
             _stateDetails = getStageDetailsClass();
 
@@ -262,7 +262,7 @@ public class HIT_Timer extends ActionBarActivity {
         } else {
             if (workout != null) workout.cancel(true);
             isRunning = false;
-            btnStartTimer.setText(R.string.startTimerButtonText);
+            btnStartTimer.setText(R.string.Start_Timer);
             showState();
         }
     }
