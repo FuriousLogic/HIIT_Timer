@@ -27,5 +27,22 @@
     <string name="Sound_title">Sound</string>
     <string name="Sound_summary">Warning beeps during workout</string>
     <string name="Sound_dialog_title">Sounds</string>
+    <string name="Time_Since_Last_Workout">Time Since Last Workout</string>
+    <string name="Days">days</string>
+    <string name="hours">hours</string>
+    <string name="minutes">minutes</string>
+    <string name="No_workouts_completed">No workouts completed</string>
+    <string name="Last_Workout">Last Workout</string>
+    <string name="Show_Info_1">"High Intensity Interval Training (HIIT) is an enhanced form of interval training, an exercise strategy "</string>
+    <string name="Show_Info_2">alternating periods of short intense anaerobic exercise with less-intense recovery periods.</string>
+    <string name="Show_Info_3">This app defaults to the Timmons Regimen as covers by BBC Horizon in Feb 2012.  This program involves approximately 21 minutes of exercise a week.</string>
+    <string name="High_Intensity_Interval_Training">High Intensity Interval Training</string>
+    <string name="OK">OK</string>
+    <string name="YAY">YAY</string>
+    <string name="Inactivity">Inactivity</string>
+    <string name="Warm_Up">Warm Up</string>
+    <string name="On">On</string>
+    <string name="Rest">Rest</string>
+    <string name="Cool_Down">Cool Down</string>
 
 </resources>

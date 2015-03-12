@@ -1,5 +1,7 @@
 package uk.co.furiouslogic.hittimer;
 
+import android.content.Context;
+
 /**
  * Created by Barry on 04/03/2015.
  */
@@ -30,7 +32,11 @@ public class StateDetails {
     private String _foregroundColour;
     private String _stageName;
 
-    public StateDetails(int secondsWarmUp, int secondsPower, int secondsRest, int secondsCoolDown, int repsCount) {
+    private Context _context;
+
+    public StateDetails(Context context, int secondsWarmUp, int secondsPower, int secondsRest, int secondsCoolDown, int repsCount) {
+
+        _context = context;
 
         //Store Details
         _secondsWarmUp = secondsWarmUp;
@@ -57,7 +63,7 @@ public class StateDetails {
             _stageSecond = 0;
             _backgroundColour = bFinished;
             _foregroundColour = tFinished;
-            _stageName = "Inactivity";
+            _stageName = _context.getString(R.string.Inactivity);
             return;
         }
 
@@ -65,7 +71,7 @@ public class StateDetails {
             _stageSecond = _secondsWarmUp - workoutSecondsGone;
             _backgroundColour = bWarmUp;
             _foregroundColour = tWarmUp;
-            _stageName = "Warm Up";
+            _stageName = _context.getString(R.string.Warm_Up);
         } else {
             int secondTracker = _secondsWarmUp;
             while (_currentRep <= _repsCount) {
@@ -73,12 +79,12 @@ public class StateDetails {
 
                 secondTracker += _secondsPower;
                 if (workoutSecondsGone < secondTracker) {
-                    if (!_stageName.equals("On")) SoundsSingleton.playStartSound();
+                    if (!_stageName.equals(_context.getString(R.string.On))) SoundsSingleton.playStartSound();
 
                     _stageSecond = secondTracker - workoutSecondsGone;
                     _backgroundColour = bOn;
                     _foregroundColour = tOn;
-                    _stageName = "On";
+                    _stageName = _context.getString(R.string.On);
                     return;
                 }
 
@@ -87,12 +93,12 @@ public class StateDetails {
                 }
                 secondTracker += _secondsRest;
                 if (workoutSecondsGone < secondTracker) {
-                    if (_stageName.equals("On")) SoundsSingleton.playStopSound();
+                    if (_stageName.equals(_context.getString(R.string.On))) SoundsSingleton.playStopSound();
 
                     _stageSecond = secondTracker - workoutSecondsGone;
                     _backgroundColour = bRest;
                     _foregroundColour = tRest;
-                    _stageName = "Rest";
+                    _stageName = _context.getString(R.string.Rest);
                     return;
                 }
 
@@ -103,7 +109,7 @@ public class StateDetails {
             _stageSecond = secondTracker - workoutSecondsGone;
             _backgroundColour = bCoolDown;
             _foregroundColour = tCoolDown;
-            _stageName = "Cool Down";
+            _stageName = _context.getString(R.string.Cool_Down);
         }
     }
 

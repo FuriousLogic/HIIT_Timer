@@ -100,7 +100,7 @@ public class HIT_Timer extends ActionBarActivity {
         //Last Workout Message
         if (!_lastWorkoutMessageAlreadyShown) {
 
-            _lastWorkoutMessageAlreadyShown=true;
+            _lastWorkoutMessageAlreadyShown = true;
 
             //Time since last workout
             Date now = new Date(System.currentTimeMillis());
@@ -115,15 +115,16 @@ public class HIT_Timer extends ActionBarActivity {
                 long hoursLeft = seconds % 24;
                 seconds /= 24;
                 long daysLeft = seconds;
-                timeSinceLastWorkoutMessage = "Time Since Last Workout: \r\n";
-                if (daysLeft > 0) timeSinceLastWorkoutMessage += daysLeft + " days, ";
-                timeSinceLastWorkoutMessage += hoursLeft + " hours, ";
-                timeSinceLastWorkoutMessage += minutesLeft + " minutes";
+                timeSinceLastWorkoutMessage = getString(R.string.Time_Since_Last_Workout) + ":\r\n";
+                if (daysLeft > 0)
+                    timeSinceLastWorkoutMessage += daysLeft + " " + getString(R.string.Days) + ", ";
+                timeSinceLastWorkoutMessage += hoursLeft + " " + getString(R.string.hours) + ", ";
+                timeSinceLastWorkoutMessage += minutesLeft + " " + getString(R.string.minutes);
             } else {
-                timeSinceLastWorkoutMessage = "No workouts completed";
+                timeSinceLastWorkoutMessage = getString(R.string.No_workouts_completed);
             }
 
-            showPopupMessage("Last Workout", timeSinceLastWorkoutMessage);
+            showPopupMessage(getString(R.string.Last_Workout), timeSinceLastWorkoutMessage);
         }
     }
 
@@ -230,20 +231,17 @@ public class HIT_Timer extends ActionBarActivity {
 //    }
 
     private void showInfo() {
-        String msg = "High Intensity Interval Training (HIIT) is an enhanced form of interval training, an exercise strategy " +
-                "alternating periods of short intense anaerobic exercise with less-intense recovery periods.\r\n" +
-                "This app defaults to the Timmons Regimen as covers by BBC Horizon in Feb 2012.  " +
-                "This program involves approximately 21 minutes of exercise a week.\r\n" +
-                "http://www.gpnotebook.co.uk/simplepage.cfm?ID=x20130328210031685340" +
-                "http://www.medicalnewstoday.com/articles/242498.php";
-        showPopupMessage("High Intensity Interval Training", msg);
+        String msg = getString(R.string.Show_Info_1) +
+                getString(R.string.Show_Info_2) + "\r\n" +
+                getString(R.string.Show_Info_3);
+        showPopupMessage(getString(R.string.High_Intensity_Interval_Training), msg);
     }
 
     private void showPopupMessage(String subject, String message) {
         AlertDialog.Builder dlgAlert = new AlertDialog.Builder(this);
         dlgAlert.setMessage(message);
         dlgAlert.setTitle(subject);
-        dlgAlert.setPositiveButton("OK", null);
+        dlgAlert.setPositiveButton(getString(R.string.OK), null);
         dlgAlert.setCancelable(true);
         dlgAlert.create().show();
     }
@@ -284,7 +282,7 @@ public class HIT_Timer extends ActionBarActivity {
         int secondsRest = Integer.parseInt(sRest);
         int secondsCoolDown = Integer.parseInt(sCoolDown);
         int repsCount = Integer.parseInt(sReps);
-        return new StateDetails(secondsWarmUp, secondsPower, secondsRest, secondsCoolDown, repsCount);
+        return new StateDetails(getApplicationContext(), secondsWarmUp, secondsPower, secondsRest, secondsCoolDown, repsCount);
 
     }
 
@@ -296,7 +294,7 @@ public class HIT_Timer extends ActionBarActivity {
     public void workoutIsFinished() {
         isRunning = false;
         DbHandlerSingleton.saveNewWorkout();
-        tvCountDown.setText("YAY");
+        tvCountDown.setText(getString(R.string.YAY));
     }
 
     private class Workout extends AsyncTask<Integer, Integer, Boolean> {
