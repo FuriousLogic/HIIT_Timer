@@ -10,9 +10,9 @@
 <resources>
     <!--Warm up-->
     <string-array name="warmup_types">
-        <item>1 minute</item>
-        <item>2 minutes</item>
-        <item>3 minutes</item>
+        <item>1 minuto</item>
+        <item>2 minutos</item>
+        <item>3 minutos</item>
     </string-array>
     <string-array name="warmup_values">
         <item>60</item>
@@ -22,9 +22,9 @@
 
     <!--Power-->
     <string-array name="power_types">
-        <item>10 seconds</item>
-        <item>20 seconds</item>
-        <item>30 seconds</item>
+        <item>10 segundos</item>
+        <item>20 segundos</item>
+        <item>30 segundos</item>
     </string-array>
     <string-array name="power_values">
         <item>10</item>
@@ -34,9 +34,9 @@
 
     <!--Rest-->
     <string-array name="rest_types">
-        <item>1 minute</item>
-        <item>2 minutes</item>
-        <item>3 minutes</item>
+        <item>1 minuto</item>
+        <item>2 minutos</item>
+        <item>3 minutos</item>
     </string-array>
     <string-array name="rest_values">
         <item>60</item>
@@ -46,9 +46,9 @@
 
     <!--Cool down-->
     <string-array name="cooldown_types">
-        <item>1 minute</item>
-        <item>2 minutes</item>
-        <item>3 minutes</item>
+        <item>1 minuto</item>
+        <item>2 minutos</item>
+        <item>3 minutos</item>
     </string-array>
     <string-array name="cooldown_values">
         <item>60</item>

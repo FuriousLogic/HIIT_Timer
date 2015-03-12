@@ -79,12 +79,12 @@ public class StateDetails {
 
                 secondTracker += _secondsPower;
                 if (workoutSecondsGone < secondTracker) {
-                    if (!_stageName.equals(_context.getString(R.string.On))) SoundsSingleton.playStartSound();
+                    if (!_stageName.equals(_context.getString(R.string.Power))) SoundsSingleton.playStartSound();
 
                     _stageSecond = secondTracker - workoutSecondsGone;
                     _backgroundColour = bOn;
                     _foregroundColour = tOn;
-                    _stageName = _context.getString(R.string.On);
+                    _stageName = _context.getString(R.string.Power);
                     return;
                 }
 
@@ -93,7 +93,7 @@ public class StateDetails {
                 }
                 secondTracker += _secondsRest;
                 if (workoutSecondsGone < secondTracker) {
-                    if (_stageName.equals(_context.getString(R.string.On))) SoundsSingleton.playStopSound();
+                    if (_stageName.equals(_context.getString(R.string.Power))) SoundsSingleton.playStopSound();
 
                     _stageSecond = secondTracker - workoutSecondsGone;
                     _backgroundColour = bRest;

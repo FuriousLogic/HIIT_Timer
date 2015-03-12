@@ -15,7 +15,7 @@ public class PreferenceSingleton {
         _applicationContext = context;
 
         //Set initial values
-        SetInitialPreference("pref_AthleteName","Your Name");
+        SetInitialPreference("pref_AthleteName", context.getString(R.string.Your_Name));
         SetInitialPreference("pref_warmup", "120");
         SetInitialPreference("pref_power", "20");
         SetInitialPreference("pref_rest", "120");

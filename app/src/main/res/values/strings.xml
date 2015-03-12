@@ -21,14 +21,13 @@
     <string name="minutes">minutes</string>
     <string name="No_workouts_completed">No workouts completed</string>
     <string name="OK">OK</string>
-    <string name="On">On</string>
     <string name="Power_Stage_seconds">Power Stage (seconds)</string>
     <string name="Power">Power</string>
     <string name="Number_of_reps">Number of reps</string>
     <string name="Reps">Reps</string>
     <string name="Rest">Rest</string>
     <string name="Rest_Stage_seconds">Rest Stage (seconds)</string>
-    <string name="Show_Info_1">"High Intensity Interval Training (HIIT) is an enhanced form of interval training, an exercise strategy "</string>
+    <string name="Show_Info_1">High Intensity Interval Training (HIIT) is an enhanced form of interval training, an exercise strategy </string>
     <string name="Show_Info_2">alternating periods of short intense anaerobic exercise with less-intense recovery periods.</string>
     <string name="Show_Info_3">This app defaults to the Timmons Regimen as covers by BBC Horizon in Feb 2012.  This program involves approximately 21 minutes of exercise a week.</string>
     <string name="Sounds">Sounds</string>
@@ -40,5 +39,6 @@
     <string name="Warm_Up">Warm Up</string>
     <string name="Warm_Up_Stage_seconds">Warm Up Stage (seconds)</string>
     <string name="YAY">YAY</string>
+    <string name="Your_Name">Your Name</string>
 
 </resources>
