@@ -73,7 +73,12 @@ public class HIT_Timer extends ActionBarActivity {
     private void showState() {
         try {
             DbHandlerSingleton.SaveToLog("showState");
-            if (!isRunning) workoutSecondsGone = 0;
+            if (!isRunning) {
+                workoutSecondsGone = 0;
+                btnStartTimer.setText(R.string.Start_Timer);
+            } else
+                btnStartTimer.setText(R.string.Cancel);
+
             _stateDetails = getStageDetailsClass();
 
             _stateDetails.WorkoutSecondsGone(workoutSecondsGone, isRunning);
@@ -176,6 +181,7 @@ public class HIT_Timer extends ActionBarActivity {
         } catch (Exception e) {
             processError(e);
         }
+        return true;
     }
 
     @Override
@@ -197,6 +203,7 @@ public class HIT_Timer extends ActionBarActivity {
         } catch (Exception e) {
             processError(e);
         }
+        return true;
     }
 
     @Override
@@ -294,7 +301,6 @@ public class HIT_Timer extends ActionBarActivity {
 
         try {
             if (btnStartTimer.getText() == getString(R.string.Start_Timer)) {
-                btnStartTimer.setText(getString(R.string.Cancel));
                 isRunning = true;
                 _stateDetails = getStageDetailsClass();
 
@@ -302,7 +308,6 @@ public class HIT_Timer extends ActionBarActivity {
             } else {
                 if (workout != null) workout.cancel(true);
                 isRunning = false;
-                btnStartTimer.setText(R.string.Start_Timer);
                 showState();
             }
         } catch (Exception e) {
