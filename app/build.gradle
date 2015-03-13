@@ -8,8 +8,8 @@ android {
         applicationId "uk.co.furiouslogic.hiittimer"
         minSdkVersion 9
         targetSdkVersion 21
-        versionCode 8
-        versionName "1.5"
+        versionCode 9
+        versionName "1.51"
     }
     buildTypes {
         release {
